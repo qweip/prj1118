@@ -7,21 +7,38 @@ class IPPacket {
     private:
         uint32_t sec;  //開始抓封包以來所經過的秒數
         uint32_t nsec; //奈秒數
-        uchar *pktdata;//pktdata是原始封包的內容(第三層開始)
+        const uchar *pktdata;//pktdata是原始封包的內容(第三層開始)
+
+    public:
+        IPPacket();
+
+        void SetSec(uint32_t _sec);
+        void SetNsec(uint32_t _nsec);
+        void SetDataPtr(const uchar *_pktdata);
+
+        uint32_t GetSec() const;
+        uint32_t GetNsec() const;
+        const uchar* GetDataPtr() const;
 };
 
 class IPPacketInput{
+    private:
+        IPPacket *p;    //Data
+        uint32_t n;     //Count
+        uint32_t c;     //Current Index
 
     public:
-        //IPPacketInput(uint32_t _sec=0,uint32_t _nsec=0)
-        //    :sec(_sec),nsec(_nsec),pktdata(NULL){printf("IPPacketInput成員初始化完成!\n");}
         IPPacketInput();
-        IPPacket next();//下一個封包的位址
-        uint32_t n();   //取得有幾個封包
-        IPPacket operator[](uint32_t index); //Exception 隨機存取用
 
-    protected:
+        const IPPacket& next(bool &more); //下一個封包的位址，輸出會放在output變數，當沒有封包的時候回傳false
+        void reset(); //重設目前封包
+        uint32_t cur(); //目前是第幾個封包(0-based)
 
+        uint32_t N() const;   //取得有幾個封包
+        uint32_t Count() const;
+        uint32_t Length() const;
+
+        const IPPacket& operator[](uint32_t index) const; //Exception 隨機存取用
 };
 
 class ConnState{
@@ -35,17 +52,9 @@ class ConnState{
 class ConnStateOutput{
 
     public:
-        //ConnState(int _version=0,uint32_t _state=0,uint32_t _nconn=0)
-        //    :version(_version),ip(""),state(_state),nconn(_nconn){printf("ConnState成員初始化完成!\n");}
         ConnStateOutput();
-        void add(ConnState output);
 
-
-    protected:
-
+        void add(const ConnState &output); //插入輸出結果
 };
-
-
-int FB(IPPacketInput input, ConnStateOutput &output);
 
 #endif
