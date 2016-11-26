@@ -2,50 +2,92 @@
 #define CONNA_INCLUDE
 
 #include <stdio.h>
+#include <sniff.hpp>
+#include <pcap.h>
+#include <winsock2.h>
+#include <QApplication>
+
 
 class IPPacket {
     private:
         uint32_t sec;  //開始抓封包以來所經過的秒數
         uint32_t nsec; //奈秒數
-        uchar *pktdata;//pktdata是原始封包的內容(第三層開始)
+        const uchar *pktdata;//pktdata是原始封包的內容(第三層開始)
+
+    public:
+        IPPacket();
+
+        void SetSec(uint32_t _sec);
+        void SetNsec(uint32_t _nsec);
+        void SetDataPtr(const uchar *_pktdata);
+
+        uint32_t GetSec() const;
+        uint32_t GetNsec() const;
+        const uchar* GetDataPtr() const;
 };
 
 class IPPacketInput{
+    private:
+        IPPacket *p;    //Data
+        uint32_t n;     //Count
+        uint32_t c;     //Current Index
 
     public:
-        //IPPacketInput(uint32_t _sec=0,uint32_t _nsec=0)
-        //    :sec(_sec),nsec(_nsec),pktdata(NULL){printf("IPPacketInput成員初始化完成!\n");}
+        const static IPPacket NULL_PACKET;
+
         IPPacketInput();
-        IPPacket next();//下一個封包的位址
-        uint32_t n();   //取得有幾個封包
-        IPPacket operator[](uint32_t index); //Exception 隨機存取用
 
-    protected:
+        const IPPacket& next(bool &more); //下一個封包的位址，輸出會放在output變數，當沒有封包的時候回傳false
+        void reset(); //重設目前封包
+        uint32_t cur() const; //目前是第幾個封包(0-based)
 
+        uint32_t N() const;   //取得有幾個封包
+        uint32_t Count() const;
+        uint32_t Length() const;
+
+        const IPPacket& operator[](uint32_t index) const; //Exception(const char *) 隨機存取用
 };
-
+/*
+ * 伺服器  src ip
+ * 檢查連線 dst IP
+ */
 class ConnState{
     private:
-        int version;    //IPV4? IPV6
-        uchar ip[16];   //Record IP
+        ushort version;    //IPV4? IPV6?
+        char ip[MAX_ADDR_LEN];//save dstip
+        ushort sport,dport;//sport dport
         uint32_t state; //0?(No connected) 1?(connected) 2?(useing the app)
         uint32_t nconn; //number of connection
+    public:
+        ConnState();
+
+        void SetMember(ushort _ver,char _ip[],uint32_t _state,uint32_t _nconn);
+        void SetVer(uint32_t _ver);
+        void SetIP(char _ip[]);
+        void SetState(uint32_t _state);
+        void SetNConn();
+
+
+        ushort GetVer();
+        char* GetIP();
+        uint32_t GetState();
+        uint32_t GetnConn();
+        uint32_t checkConn(char _ip[],uint32_t _sport,uint32_t _dport);//存在0 1
+
 };
 
 class ConnStateOutput{
 
+    private:
+
     public:
-        //ConnState(int _version=0,uint32_t _state=0,uint32_t _nconn=0)
-        //    :version(_version),ip(""),state(_state),nconn(_nconn){printf("ConnState成員初始化完成!\n");}
+
         ConnStateOutput();
-        void add(ConnState output);
-
-
-    protected:
+        void add(const ConnState &output); //插入輸出結果
 
 };
 
-
-int FB(IPPacketInput input, ConnStateOutput &output);
+int FB();
 
 #endif
+
