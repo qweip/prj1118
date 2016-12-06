@@ -15,6 +15,7 @@
 IPPacket::IPPacket() {
     pktdata = 0;
     nsec = sec = 0;
+
 }
 
 void IPPacket::SetSec(uint32_t _sec) {
