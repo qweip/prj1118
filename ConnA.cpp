@@ -1,8 +1,8 @@
 #include "ConnA.hpp"
 
-#include <stdio.h>
-#include <QApplication>
 
+#include <QApplication>
+#include <QHostInfo>
 
 /*
 
@@ -92,10 +92,8 @@ int File2DS(const char *filename, IPPacketInput &pkts) {
 ushort ConnState::GetVer(){
     return version;
 }
-
-ConnState::ConnState(){
-
-}
+//init
+ConnState::ConnState():version(0),ip(),dport(0),state(0){}
 
 char* ConnState::GetIP(){
     return ip;
@@ -105,11 +103,12 @@ uint32_t ConnState::GetState(){
     return state;
 }
 
-uint32_t ConnState::GetnConn(){
-    return nconn;
-}
+//uint32_t ConnState::GetnConn(){return nconn;}
 
-uint32_t ConnState::checkConn(char _ip[],uint32_t _sport,uint32_t _dport){
+uint32_t ConnState::checkConn(char clientIP[],uint32_t clientPort){
+    if(!strstr(ip,clientIP))
+        if(clientPort == dport)return 1;
+    return 0;
 
 }
 
@@ -125,54 +124,83 @@ void ConnState::SetState(uint32_t _state){
     state = _state;
 }
 
-void ConnState::SetNConn(){
-    nconn++;
+//void ConnState::SetNConn(){nconn++;}
+
+void ConnState::SetMember(ushort _ver,char _ip[],uint32_t _state){
+    version=_ver;
+    memcpy(ip,_ip,MAX_ADDR_LEN);
+    state=_state;
+    //nconn=_nconn;
+
+}
+//未完成
+void ConnStateOutput::add(const ConnState &output)
+{
+
 }
 
 
 
-
-
-int FB(IPPacketInput input, ConnStateOutput& output) {
+int FB(IPPacketInput input, ConnStateOutput& output,char* app) {
 
     ConnState state;
     sniff_ip* ip;
     sniff_tcp* tcp;
-    uint32_t s,n,index;
-    s = 0;
-    n = input.N();
-    index = input.cur();
+    uint32_t s,index = 0,ipHeaderLen;
+    ushort ver,serverPort,clientPort;
+    uchar Proto;
+    uchar* pkt;
 
-    const uchar* pkt;
-    pkt = input[index].GetDataPtr();
-    ip =(sniff_ip*)(pkt);
-    tcp=(sniff_tcp*)(pkt+20);
+    char serverIP[IP_ADDR_LEN],clientIP[IP_ADDR_LEN];
 
-    char srcIP[IP_ADDR_LEN],dstIP[IP_ADDR_LEN];
+    while(input[index].GetDataPtr()){
+        pkt=NULL;
+        ip  = (sniff_ip*)pkt;
+        ver = (ip->ip_vhl) >> 4;
+        Proto = ip->ip_p;
+        ipHeaderLen = (ip->ip_vhl & 0x0F) * 4;
+        sprintf(serverIP ,"%u.%u.%u.%u" ,ip->saddr.byte1,
+            ip->saddr.byte2 ,ip->saddr.byte3 ,ip->saddr.byte4);
+        sprintf(clientIP ,"%u.%u.%u.%u" ,ip->daddr.byte1,
+            ip->daddr.byte2 ,ip->daddr.byte3 ,ip->daddr.byte4);
 
-    if(n<20)return 0;
-    while(index < n){
-        //ipv4?
-        if((ip->ip_vhl>>4) == 4){
-            sprintf(srcIP,"%u.%u.%u.%u",ip->saddr.byte1,
-                ip->saddr.byte2,ip->saddr.byte3,ip->saddr.byte4);
-            sprintf(dstIP,"%u.%u.%u.%u",ip->daddr.byte1,
-                ip->daddr.byte2,ip->daddr.byte3,ip->daddr.byte4);
-            //檢查是否為連線是否為FB
-            if(strcmp(srcIP,"31.13"))return 0;//字串相同回傳值為0
-            //檢查連線是否存在
-            if(state.checkConn(dstIP,tcp->th_sport,tcp->th_dport))return 1;
+        tcp = (sniff_tcp*)(pkt + (ipHeaderLen));
+        serverPort = tcp->th_sport;
+        clientPort = tcp->th_dport;
 
-            //設定資料
-            if((tcp->th_dport))
-            if((tcp->th_sport==443))state.SetNConn();
-            state.SetVer(4);
-            state.SetIP(srcIP);
-            if((ip->ip_len)<700)state.SetState(1);
-            else if((ip->ip_len)>=700)state.SetState(2);
+        while(ipHeaderLen > 20){
+            if(strstr(app,"facebook") != NULL)
+            if(ver == 4){
+                //tcp?
+                if(!(Proto == 6))break;
+                //443?
+                if(!(serverPort == 443))break;
+                //DNS Reverse lookup
+                QHostInfo HI = QHostInfo::fromName(serverIP);
+                if(strstr((HI.hostName().toStdString().c_str()),app)==NULL)break;
 
+                //checkconn
+                if(state.checkConn(clientIP,clientPort))break;
+                //state 簡單處理...
+                if((ip->ip_len)<700)s = 1;
+                else if((ip->ip_len)>=700)s = 2;
+                else s = 0;
+                //setdata
+                state.SetMember(ver,clientIP,s);
+            }
+            if(strstr(app,"line") != NULL);
         }
+        index++;
     }
-
+    output.add(state);
     return s;
 }
+
+/*
+            if (tcp->th_flags & 0x08) printf("(PSH)");
+            if (tcp->th_flags & 0x10) printf("(ACK)");
+            if (tcp->th_flags & 0x02) printf("(SYN)");
+            if (tcp->th_flags & 0x20) printf("(URG)");
+            if (tcp->th_flags & 0x01) printf("(FIN)");
+            if (tcp->th_flags & 0x04) printf("(RST)");
+*/

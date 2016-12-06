@@ -24,5 +24,5 @@ FORMS    += mainwindow.ui
 #------------wpcap---------------
 INCLUDEPATH += ./Include/wpcap
 LIBS += ./Lib/wpcap.lib
+QT += network
 
-LIBS += -lws2_32
