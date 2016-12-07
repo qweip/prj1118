@@ -55,6 +55,7 @@ class IPPacketInput{
         uint32_t Length() const;
 
         const IPPacket& operator[](uint32_t index) const; //Exception(const char *) 隨機存取用
+};
 
         void add(IPPacket *p);
 };
@@ -103,6 +104,5 @@ class ConnStateOutput{
 };
 
 int FB();
-
 #endif
 
