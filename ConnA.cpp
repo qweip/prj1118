@@ -4,6 +4,10 @@
 #include <QApplication>
 #include <QHostInfo>
 
+#ifdef __MINGW32__
+#include <pcap.h>
+#endif
+
 #ifdef __linux__
 #include <arpa/inet.h>
 #include <pcap.h>
@@ -111,7 +115,7 @@ int File2DS(const char *filename, IPPacketInput &pkts, void ***memPtr) {
     unsigned char *npdata;
     unsigned int i, n;
 
-    pf = pcap_open_offline_with_tstamp_precision(filename, PCAP_TSTAMP_PRECISION_NANO, errbuf);
+    pf = pcap_open_offline(filename,errbuf);//pcap_open_offline_with_tstamp_precision(filename, PCAP_TSTAMP_PRECISION_NANO, errbuf);
     if(!pf) return 1;
 
     while((pdata = pcap_next(pf, &ph))) {

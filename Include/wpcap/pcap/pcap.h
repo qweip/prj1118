@@ -282,6 +282,7 @@ int	pcap_activate(pcap_t *);
 
 pcap_t	*pcap_open_live(const char *, int, int, int, char *);
 pcap_t	*pcap_open_dead(int, int);
+
 pcap_t	*pcap_open_offline(const char *, char *);
 #if defined(WIN32)
 pcap_t  *pcap_hopen_offline(intptr_t, char *);
