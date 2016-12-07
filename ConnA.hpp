@@ -13,6 +13,7 @@
 #include <QApplication>
 
 
+class IPPacketInput;
 class IPPacket {
     private:
         uint32_t sec;  //開始抓封包以來所經過的秒數
@@ -21,6 +22,7 @@ class IPPacket {
 
     public:
         IPPacket();
+        ~IPPacket();
 
         void SetSec(uint32_t _sec);
         void SetNsec(uint32_t _nsec);
@@ -29,6 +31,8 @@ class IPPacket {
         uint32_t GetSec() const;
         uint32_t GetNsec() const;
         const uchar* GetDataPtr() const;
+
+    friend class IPPacketInput;
 };
 
 class IPPacketInput{
@@ -51,6 +55,8 @@ class IPPacketInput{
         uint32_t Length() const;
 
         const IPPacket& operator[](uint32_t index) const; //Exception(const char *) 隨機存取用
+
+        void add(IPPacket *p);
 };
 /*
  * 伺服器  src ip
@@ -86,11 +92,14 @@ class ConnState{
 class ConnStateOutput{
 
     private:
+        ConnState *p;
+        unsigned int n;
 
     public:
         ConnStateOutput();
         void add(const ConnState &output); //插入輸出結果
 
+        unsigned int N() const; //取得目前的物件總數
 };
 
 int FB();

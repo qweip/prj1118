@@ -6,6 +6,7 @@
 
 #ifdef __linux__
 #include <arpa/inet.h>
+#include <pcap.h>
 #endif
 
 /*
@@ -19,7 +20,9 @@
 IPPacket::IPPacket() {
     pktdata = 0;
     nsec = sec = 0;
+}
 
+IPPacket::~IPPacket() {
 }
 
 void IPPacket::SetSec(uint32_t _sec) {
@@ -50,7 +53,7 @@ const IPPacket IPPacketInput::NULL_PACKET = IPPacket();
 
 
 IPPacketInput::IPPacketInput() {
-    p = 0;
+    p = (IPPacket*)malloc(0);
     n = c = 0;
 }
 
@@ -90,9 +93,43 @@ const IPPacket& IPPacketInput::operator[](uint32_t index) const {
     return p[index];
 }
 
-int File2DS(const char *filename, IPPacketInput &pkts) {
+void IPPacketInput::add(IPPacket *pkt) {
+    IPPacket *t;
+    t = (IPPacket*)realloc(p, sizeof(*p) * (n + 1));
 
+    p = t;
+    p[n] = *pkt;
+    n += 1;
 }
+
+int File2DS(const char *filename, IPPacketInput &pkts, void ***memPtr) {
+    char errbuf[PCAP_ERRBUF_SIZE];
+    struct pcap_pkthdr ph;
+    IPPacket ipp;
+    pcap_t *pf;
+    const unsigned char *pdata;
+    unsigned char *npdata;
+    unsigned int i, n;
+
+    pf = pcap_open_offline_with_tstamp_precision(filename, PCAP_TSTAMP_PRECISION_NANO, errbuf);
+    if(!pf) return 1;
+
+    while((pdata = pcap_next(pf, &ph))) {
+        npdata = (unsigned char*)malloc(sizeof(*npdata) * ph.caplen);
+        ipp.SetDataPtr(npdata);
+        ipp.SetSec((ph.ts).tv_sec);
+        ipp.SetNsec((ph.ts).tv_usec);
+        pkts.add(&ipp);
+    }
+
+    n = pkts.N();
+    *memPtr = (void**)malloc(sizeof(**memPtr) * n);
+    for(i = 0; i < n; i++)
+        (*memPtr)[i] = (void*)pkts[i].GetDataPtr();
+
+    return 0;
+}
+
 //ConnState
 ushort ConnState::GetVer(){
     return version;
@@ -138,10 +175,25 @@ void ConnState::SetMember(ushort _ver,char _ip[],uint32_t _state){
     //nconn=_nconn;
 
 }
+
+ConnStateOutput::ConnStateOutput() {
+    p = (ConnState*)malloc(0);
+    n = 0;
+}
+
 //未完成
 void ConnStateOutput::add(const ConnState &output)
 {
+    ConnState *t;
+    t = (ConnState*)realloc(p, sizeof(*p) * (n + 1));
 
+    p = t;
+    p[n] = output;
+    n += 1;
+}
+
+unsigned int ConnStateOutput::N() const {
+    return n;
 }
 
 
