@@ -13,13 +13,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp\
-        ConnA.cpp
+        mainwindow.cpp
 
-HEADERS  += mainwindow.h\
-        ConnA.hpp
+HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
 #------------wpcap---------------
-INCLUDEPATH += ./Include/wpcap
-LIBS += ./Lib/wpcap.lib
+#INCLUDEPATH += ./Include/wpcap
+#LIBS += ./Lib/wpcap.lib
