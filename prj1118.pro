@@ -26,3 +26,4 @@ INCLUDEPATH += ./Include/wpcap
 LIBS += ./Lib/wpcap.lib
 QT += network
 
+LIBS += -l ws2_32

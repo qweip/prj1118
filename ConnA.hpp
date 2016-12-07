@@ -55,7 +55,7 @@ class ConnState{
     private:
         ushort version;    //IPV4? IPV6?
         char ip[MAX_ADDR_LEN];//save dstip(Client IP)
-        ushort dport;//dport
+        ushort dport;//host dport
         uint32_t state; //0?(No connected) 1?(connected) 2?(useing the app)
         //uint32_t nconn; //number of connection
     public:
@@ -65,11 +65,13 @@ class ConnState{
         void SetVer(uint32_t _ver);
         void SetIP(char _ip[]);
         void SetState(uint32_t _state);
+        void SetPort(uint32_t _dport);
         //void SetNConn();
 
 
         ushort GetVer();
         char* GetIP();
+        ushort GetdPort();
         uint32_t GetState();
         //uint32_t GetnConn();
         uint32_t checkConn(char clientIP[],uint32_t clientPort);
