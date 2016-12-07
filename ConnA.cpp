@@ -4,6 +4,10 @@
 #include <QApplication>
 #include <QHostInfo>
 
+#ifdef __linux__
+#include <arpa/inet.h>
+#endif
+
 /*
 
 */

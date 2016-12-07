@@ -21,9 +21,17 @@ HEADERS  += mainwindow.h \
     sniff.hpp
 
 FORMS    += mainwindow.ui
-#------------wpcap---------------
-INCLUDEPATH += ./Include/wpcap
-LIBS += ./Lib/wpcap.lib
+
 QT += network
 
-LIBS += -l ws2_32
+win32 {
+#------------wpcap---------------
+    INCLUDEPATH += ./Include/wpcap
+    LIBS += ./Lib/wpcap.lib
+    LIBS += -l ws2_32
+}
+
+unix:!macx {
+#------------wpcap---------------
+  LIBS += -l lpcap
+}

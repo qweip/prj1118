@@ -4,7 +4,12 @@
 #include <stdio.h>
 #include <sniff.hpp>
 #include <pcap.h>
+#ifdef __MINGW32__
 #include <winsock2.h>
+#endif
+#ifdef __linux__
+#include <sys/socket.h>
+#endif
 #include <QApplication>
 
 
