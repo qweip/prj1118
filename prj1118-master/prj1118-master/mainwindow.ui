@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>692</width>
+    <height>423</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="1" column="0" rowspan="2">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="focusPolicy">
+       <enum>Qt::TabFocus</enum>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::NoContextMenu</enum>
+      </property>
+      <property name="tabPosition">
+       <enum>QTabWidget::North</enum>
+      </property>
+      <property name="tabShape">
+       <enum>QTabWidget::Rounded</enum>
+      </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <property name="elideMode">
+       <enum>Qt::ElideNone</enum>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Tab 1</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="1" column="0">
+         <widget class="QTextEdit" name="textEdit">
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'PMingLiU'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;e wfewfwefwefwefwefefeeeweww&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QTextEdit" name="textEdit_2">
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'PMingLiU'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;1234568798&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="text">
+           <string>PushButton</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QTextEdit" name="textEdit_3">
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'PMingLiU'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;1234568798&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QRadioButton" name="radioButton">
+          <property name="text">
+           <string>RadioButton</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>PushButton</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QTextBrowser" name="textBrowser">
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'PMingLiU'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;123456789&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Tab 2</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QTreeWidget" name="treeWidget_2">
+          <column>
+           <property name="text">
+            <string>133333</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>新增欄位</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>123</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>123</string>
+           </property>
+          </column>
+          <item>
+           <property name="text">
+            <string>新增項目</string>
+           </property>
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="text">
+            <string>12321</string>
+           </property>
+           <property name="text">
+            <string>123123</string>
+           </property>
+           <property name="text">
+            <string>12312</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+           </property>
+           <item>
+            <property name="text">
+             <string>12321</string>
+            </property>
+            <property name="checkState">
+             <enum>Checked</enum>
+            </property>
+            <property name="text">
+             <string>2133</string>
+            </property>
+            <property name="text">
+             <string>213213</string>
+            </property>
+            <property name="text">
+             <string>2132</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>123122222</string>
+             </property>
+             <property name="checkState">
+              <enum>Checked</enum>
+             </property>
+             <property name="text">
+              <string>21332</string>
+             </property>
+             <property name="text">
+              <string>213</string>
+             </property>
+             <property name="text">
+              <string>213123</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>1232121321</string>
+             </property>
+             <property name="checkState">
+              <enum>Checked</enum>
+             </property>
+             <property name="text">
+              <string>21323</string>
+             </property>
+             <property name="text">
+              <string>21321</string>
+             </property>
+             <property name="text">
+              <string>2132</string>
+             </property>
+            </item>
+           </item>
+           <item>
+            <property name="text">
+             <string>123</string>
+            </property>
+            <property name="text">
+             <string>12312</string>
+            </property>
+            <property name="text">
+             <string>213213</string>
+            </property>
+            <property name="text">
+             <string>213</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>2131232321</string>
+             </property>
+             <property name="text">
+              <string>1231231</string>
+             </property>
+             <property name="text">
+              <string>2132</string>
+             </property>
+             <property name="text">
+              <string>123123</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>12321321</string>
+             </property>
+             <property name="text">
+              <string>213213</string>
+             </property>
+             <property name="text">
+              <string>213</string>
+             </property>
+             <property name="text">
+              <string>21323</string>
+             </property>
+            </item>
+           </item>
+          </item>
+          <item>
+           <property name="text">
+            <string>21321231231</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>新增子項目</string>
+            </property>
+           </item>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QTreeWidget" name="treeWidget">
+      <column>
+       <property name="text">
+        <string>133333</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>新增欄位</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>123</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>123</string>
+       </property>
+      </column>
+      <item>
+       <property name="text">
+        <string>新增項目</string>
+       </property>
+       <property name="text">
+        <string>12321</string>
+       </property>
+       <property name="text">
+        <string>123123</string>
+       </property>
+       <property name="text">
+        <string>12312</string>
+       </property>
+       <property name="flags">
+        <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+       </property>
+       <item>
+        <property name="text">
+         <string>12321</string>
+        </property>
+        <property name="text">
+         <string>2133</string>
+        </property>
+        <property name="text">
+         <string>213213</string>
+        </property>
+        <property name="text">
+         <string>2132</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>123122222</string>
+         </property>
+         <property name="text">
+          <string>21332</string>
+         </property>
+         <property name="text">
+          <string>213</string>
+         </property>
+         <property name="text">
+          <string>213123</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>1232121321</string>
+         </property>
+         <property name="text">
+          <string>21323</string>
+         </property>
+         <property name="text">
+          <string>21321</string>
+         </property>
+         <property name="text">
+          <string>2132</string>
+         </property>
+        </item>
+       </item>
+       <item>
+        <property name="text">
+         <string>123</string>
+        </property>
+        <property name="text">
+         <string>12312</string>
+        </property>
+        <property name="text">
+         <string>213213</string>
+        </property>
+        <property name="text">
+         <string>213</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>2131232321</string>
+         </property>
+         <property name="text">
+          <string>1231231</string>
+         </property>
+         <property name="text">
+          <string>2132</string>
+         </property>
+         <property name="text">
+          <string>123123</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>12321321</string>
+         </property>
+         <property name="text">
+          <string>213213</string>
+         </property>
+         <property name="text">
+          <string>213</string>
+         </property>
+         <property name="text">
+          <string>21323</string>
+         </property>
+        </item>
+       </item>
+      </item>
+      <item>
+       <property name="text">
+        <string>21321231231</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>新增子項目</string>
+        </property>
+       </item>
+      </item>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>692</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="tearOffEnabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>檔案</string>
+    </property>
+    <addaction name="action"/>
+    <addaction name="actionQwdq"/>
+   </widget>
+   <widget class="QMenu" name="menu02">
+    <property name="title">
+     <string>02</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>關於</string>
+    </property>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu02"/>
+   <addaction name="menu_2"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="action01"/>
+   <addaction name="action12313"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="action01">
+   <property name="text">
+    <string>01</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>01</string>
+   </property>
+  </action>
+  <action name="action12313">
+   <property name="text">
+    <string>12313</string>
+   </property>
+  </action>
+  <action name="actionQwdq">
+   <property name="text">
+    <string>qwdq</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
