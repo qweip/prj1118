@@ -33,5 +33,5 @@ win32 {
 
 unix:!macx {
 #------------wpcap---------------
-  LIBS += -l lpcap
+  LIBS += -lpcap
 }
