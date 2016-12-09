@@ -149,7 +149,6 @@ uint32_t ConnState::GetState(){
     return state;
 }
 
-//uint32_t ConnState::GetnConn(){return nconn;}
 
 uint32_t ConnState::checkConn(char clientIP[],uint32_t clientPort){
     if(!strstr(ip,clientIP))
@@ -166,11 +165,14 @@ void ConnState::SetIP(char _ip[]){
     memcpy(ip,_ip,MAX_ADDR_LEN);
 }
 
+void ConnState::SetPort(uint32_t _dport){
+    dport = _dport;
+}
+
+
 void ConnState::SetState(uint32_t _state){
     state = _state;
 }
-
-//void ConnState::SetNConn(){nconn++;}
 
 void ConnState::SetMember(ushort _ver,char _ip[],uint32_t _state){
     version=_ver;
@@ -207,10 +209,11 @@ int FB(IPPacketInput input, ConnStateOutput& output,char* app) {
     ConnState state;
     sniff_ip* ip;
     sniff_tcp* tcp;
-    uint32_t s,ts[3]={0},index = 0,ipHeaderLen,totalLength;
+    uint32_t ts[3]={0},index = 0,ipHeaderLen,totalLength, lastSeen=0, nConBig = 0;
     ushort ver,serverPort,clientPort;
     uchar Proto;
     uchar* pkt;
+
 
     char serverIP[IP_ADDR_LEN],clientIP[IP_ADDR_LEN];
 
@@ -246,14 +249,35 @@ int FB(IPPacketInput input, ConnStateOutput& output,char* app) {
                 //checkconn
                 if(state.checkConn(clientIP,clientPort))break;
 
+
                 //state 簡單處理...
-                if(totalLength<700){s = 1; ts[1] += 1;}
-                else if(totalLength>=700){s = 2; ts[2] += 1;}
-                else {s = 0; ts[0] +=1;}
+
+
+                if(totalLength >= 700) {
+                    nConBig += 1;
+                }
+                else {
+                    nConBig = 0;
+                }
+
+                if (nConBig >= 10) {
+                    state.SetState(2);
+                }
+                if(input[index].GetSec() - lastSeen) {
+                    if (nConBig <= 5) {
+                        //background
+                        state.SetState(1);
+                    }
+                }
+                state.SetVer(ver);
+                state.SetIP(clientIP);
+                state.SetPort(clientPort);
+
 
                 //setdata
-                state.SetMember(ver,clientIP,s);
                 output.add(state);
+
+                lastSeen = input[index].GetSec();
             }
             //if(strstr(app,"line") != NULL);
         }
