@@ -4,13 +4,10 @@
 #include <QApplication>
 #include <QHostInfo>
 
-#ifdef __MINGW32__
 #include <pcap.h>
-#endif
 
 #ifdef __linux__
 #include <arpa/inet.h>
-#include <pcap.h>
 #endif
 
 /*
