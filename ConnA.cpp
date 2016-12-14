@@ -145,17 +145,21 @@ char* ConnState::GetIP(){
     return ip;
 }
 
+ushort ConnState::GetPort() {
+    return dport;
+}
+
 uint32_t ConnState::GetState(){
     return state;
 }
 
 
-uint32_t ConnState::checkConn(char clientIP[],uint32_t clientPort){
+/*uint32_t ConnState::checkConn(char clientIP[],uint32_t clientPort){
     if(!strstr(ip,clientIP))
         if(clientPort == dport)return 1;
     return 0;
 
-}
+}*/
 
 void ConnState::SetVer(uint32_t _ver){
     version =_ver;
@@ -178,8 +182,6 @@ void ConnState::SetMember(ushort _ver,char _ip[],uint32_t _state){
     version=_ver;
     memcpy(ip,_ip,MAX_ADDR_LEN);
     state=_state;
-    //nconn=_nconn;
-
 }
 
 ConnStateOutput::ConnStateOutput() {
@@ -187,7 +189,19 @@ ConnStateOutput::ConnStateOutput() {
     n = 0;
 }
 
-//未完成
+static int CScmp(const void *a, const void *b) {
+    ConnState *c= (ConnState*)a;
+    ConnState *d= (ConnState*)b;
+    int r;
+
+    if(c->GetVer() > d->GetVer()) return 1;
+    else if(c->GetVer() < d->GetVer()) return -1;
+    else if((r = memcmp(c->GetIP(), d->GetIP(), MAX_ADDR_LEN) != 0)) return r;
+    else if(c->GetPort() > d->GetPort()) return 1;
+    else if(c->GetPort() < d->GetPort()) return -1;
+    else return 0;
+}
+
 void ConnStateOutput::add(const ConnState &output)
 {
     ConnState *t;
@@ -196,6 +210,24 @@ void ConnStateOutput::add(const ConnState &output)
     p = t;
     p[n] = output;
     n += 1;
+
+    qsort(p, n, sizeof(*p), CScmp);
+}
+
+uint32_t ConnStateOutput::checkConn(char clientIP[],uint32_t clientPort){
+    ConnState *res;
+    ConnState key;
+
+    key.SetIP(clientIP);
+    key.SetPort(clientPort);
+    res = (ConnState*)bsearch(&key,p, n, sizeof(*p), CScmp);
+    if(res) return 1;
+    else return 0;
+}
+
+const ConnState& ConnStateOutput::operator[](uint32_t index) const {
+    if(index >= n) throw "Index out of bound";
+    return p[index];
 }
 
 unsigned int ConnStateOutput::N() const {
@@ -215,7 +247,7 @@ int FB(IPPacketInput input, ConnStateOutput& output,char* app) {
     uchar* pkt;
 
 
-    char serverIP[IP_ADDR_LEN],clientIP[IP_ADDR_LEN];
+    char serverIP[256],clientIP[MAX_ADDR_LEN];
 
     while(input[index].GetDataPtr()){
         pkt=NULL;
@@ -226,14 +258,19 @@ int FB(IPPacketInput input, ConnStateOutput& output,char* app) {
         totalLength= ntohs(ip->ip_len);
         sprintf(serverIP ,"%u.%u.%u.%u" ,ip->saddr.byte1,
             ip->saddr.byte2 ,ip->saddr.byte3 ,ip->saddr.byte4);
-        sprintf(clientIP ,"%u.%u.%u.%u" ,ip->daddr.byte1,
-            ip->daddr.byte2 ,ip->daddr.byte3 ,ip->daddr.byte4);
+        //sprintf(clientIP ,"%u.%u.%u.%u" ,ip->daddr.byte1,
+        //    ip->daddr.byte2 ,ip->daddr.byte3 ,ip->daddr.byte4);
+        memset(clientIP, 0, MAX_ADDR_LEN);
+        clientIP[0] = ip->daddr.byte1;
+        clientIP[1] = ip->daddr.byte2;
+        clientIP[2] = ip->daddr.byte3;
+        clientIP[3] = ip->daddr.byte4;
 
         tcp = (sniff_tcp*)(pkt + (ipHeaderLen));
         serverPort = ntohs(tcp->th_sport);
         clientPort = ntohs(tcp->th_dport);
 
-        while(ipHeaderLen >= 20){
+        while(ipHeaderLen >= 20 && ipHeaderLen <= 60){
             //if(strstr(app,"facebook") != NULL)
             if(ver == 4){
                 //tcp?
@@ -247,7 +284,7 @@ int FB(IPPacketInput input, ConnStateOutput& output,char* app) {
                 if(strstr((HI.hostName().toStdString().c_str()),app)==NULL)break;
 
                 //checkconn
-                if(state.checkConn(clientIP,clientPort))break;
+                if(output.checkConn(clientIP,clientPort))break;
 
 
                 //state 簡單處理...
@@ -278,8 +315,10 @@ int FB(IPPacketInput input, ConnStateOutput& output,char* app) {
                 output.add(state);
 
                 lastSeen = input[index].GetSec();
+
             }
             //if(strstr(app,"line") != NULL);
+             break;
         }
         index++;
     }

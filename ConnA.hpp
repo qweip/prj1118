@@ -77,10 +77,8 @@ class ConnState{
 
         ushort GetVer();
         char* GetIP();
-        ushort GetdPort();
+        ushort GetPort();
         uint32_t GetState();
-        uint32_t checkConn(char clientIP[],uint32_t clientPort);
-
 };
 
 class ConnStateOutput{
@@ -92,7 +90,8 @@ class ConnStateOutput{
     public:
         ConnStateOutput();
         void add(const ConnState &output); //插入輸出結果
-
+        uint32_t checkConn(char clientIP[],uint32_t clientPort);
+        const ConnState& operator[](uint32_t index) const;
         unsigned int N() const; //取得目前的物件總數
 };
 
