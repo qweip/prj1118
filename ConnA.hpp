@@ -9,6 +9,7 @@
 #endif
 #ifdef __linux__
 #include <sys/socket.h>
+#include <arpa/inet.h>
 #endif
 #include <QApplication>
 
@@ -57,6 +58,7 @@ class IPPacketInput{
         const IPPacket& operator[](uint32_t index) const; //Exception(const char *) 隨機存取用
 
         void add(IPPacket *p);
+        void clear();
 };
 
 class ConnState{
@@ -75,10 +77,12 @@ class ConnState{
         void SetState(uint32_t _state);
         void SetPort(uint32_t _dport);
 
-        ushort GetVer();
-        char* GetIP();
-        ushort GetPort();
-        uint32_t GetState();
+        ushort GetVer() const;
+        const char *GetIP() const;
+        ushort GetPort() const;
+        uint32_t GetState() const;
+
+        static void IP2Str(char *buf, const char *ip, ushort version);
 };
 
 class ConnStateOutput{
@@ -89,12 +93,13 @@ class ConnStateOutput{
 
     public:
         ConnStateOutput();
+        ~ConnStateOutput();
         void add(const ConnState &output); //插入輸出結果
-        uint32_t checkConn(char clientIP[],uint32_t clientPort);
+        uint32_t checkConn(char clientIP[], uint32_t clientPort, ushort ver);
         const ConnState& operator[](uint32_t index) const;
         unsigned int N() const; //取得目前的物件總數
 };
 
-int FB();
+int FB(IPPacketInput input, ConnStateOutput& output, const char* app);
 #endif
 

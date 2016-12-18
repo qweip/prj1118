@@ -16,6 +16,7 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -54,6 +55,10 @@ public:
     QWidget *tab_2;
     QGridLayout *gridLayout_4;
     QTreeWidget *treeWidget_2;
+    QWidget *tab_3;
+    QListWidget *listWidget;
+    QPushButton *pushButton_3;
+    QPushButton *pushButton_4;
     QTreeWidget *treeWidget;
     QMenuBar *menuBar;
     QMenu *menu;
@@ -142,38 +147,37 @@ public:
         gridLayout_4->setContentsMargins(11, 11, 11, 11);
         gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
         treeWidget_2 = new QTreeWidget(tab_2);
-        QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem(treeWidget_2);
-        __qtreewidgetitem->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsTristate);
-        QTreeWidgetItem *__qtreewidgetitem1 = new QTreeWidgetItem(__qtreewidgetitem);
-        __qtreewidgetitem1->setCheckState(0, Qt::Checked);
-        QTreeWidgetItem *__qtreewidgetitem2 = new QTreeWidgetItem(__qtreewidgetitem1);
-        __qtreewidgetitem2->setCheckState(0, Qt::Checked);
-        QTreeWidgetItem *__qtreewidgetitem3 = new QTreeWidgetItem(__qtreewidgetitem1);
-        __qtreewidgetitem3->setCheckState(0, Qt::Checked);
-        QTreeWidgetItem *__qtreewidgetitem4 = new QTreeWidgetItem(__qtreewidgetitem);
-        new QTreeWidgetItem(__qtreewidgetitem4);
-        new QTreeWidgetItem(__qtreewidgetitem4);
-        QTreeWidgetItem *__qtreewidgetitem5 = new QTreeWidgetItem(treeWidget_2);
-        new QTreeWidgetItem(__qtreewidgetitem5);
         treeWidget_2->setObjectName(QStringLiteral("treeWidget_2"));
 
         gridLayout_4->addWidget(treeWidget_2, 0, 0, 1, 1);
 
         tabWidget->addTab(tab_2, QString());
+        tab_3 = new QWidget();
+        tab_3->setObjectName(QStringLiteral("tab_3"));
+        listWidget = new QListWidget(tab_3);
+        listWidget->setObjectName(QStringLiteral("listWidget"));
+        listWidget->setGeometry(QRect(10, 10, 431, 281));
+        pushButton_3 = new QPushButton(tab_3);
+        pushButton_3->setObjectName(QStringLiteral("pushButton_3"));
+        pushButton_3->setGeometry(QRect(360, 310, 75, 23));
+        pushButton_4 = new QPushButton(tab_3);
+        pushButton_4->setObjectName(QStringLiteral("pushButton_4"));
+        pushButton_4->setGeometry(QRect(280, 310, 75, 23));
+        tabWidget->addTab(tab_3, QString());
 
         gridLayout_3->addWidget(tabWidget, 1, 0, 2, 1);
 
         treeWidget = new QTreeWidget(centralWidget);
-        QTreeWidgetItem *__qtreewidgetitem6 = new QTreeWidgetItem(treeWidget);
-        __qtreewidgetitem6->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsTristate);
-        QTreeWidgetItem *__qtreewidgetitem7 = new QTreeWidgetItem(__qtreewidgetitem6);
-        new QTreeWidgetItem(__qtreewidgetitem7);
-        new QTreeWidgetItem(__qtreewidgetitem7);
-        QTreeWidgetItem *__qtreewidgetitem8 = new QTreeWidgetItem(__qtreewidgetitem6);
-        new QTreeWidgetItem(__qtreewidgetitem8);
-        new QTreeWidgetItem(__qtreewidgetitem8);
-        QTreeWidgetItem *__qtreewidgetitem9 = new QTreeWidgetItem(treeWidget);
-        new QTreeWidgetItem(__qtreewidgetitem9);
+        QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem(treeWidget);
+        __qtreewidgetitem->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsTristate);
+        QTreeWidgetItem *__qtreewidgetitem1 = new QTreeWidgetItem(__qtreewidgetitem);
+        new QTreeWidgetItem(__qtreewidgetitem1);
+        new QTreeWidgetItem(__qtreewidgetitem1);
+        QTreeWidgetItem *__qtreewidgetitem2 = new QTreeWidgetItem(__qtreewidgetitem);
+        new QTreeWidgetItem(__qtreewidgetitem2);
+        new QTreeWidgetItem(__qtreewidgetitem2);
+        QTreeWidgetItem *__qtreewidgetitem3 = new QTreeWidgetItem(treeWidget);
+        new QTreeWidgetItem(__qtreewidgetitem3);
         treeWidget->setObjectName(QStringLiteral("treeWidget"));
 
         gridLayout_3->addWidget(treeWidget, 2, 1, 1, 1);
@@ -207,7 +211,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -246,103 +250,61 @@ public:
         label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "Tab 1", 0));
         QTreeWidgetItem *___qtreewidgetitem = treeWidget_2->headerItem();
-        ___qtreewidgetitem->setText(3, QApplication::translate("MainWindow", "123", 0));
-        ___qtreewidgetitem->setText(2, QApplication::translate("MainWindow", "123", 0));
-        ___qtreewidgetitem->setText(1, QApplication::translate("MainWindow", "\346\226\260\345\242\236\346\254\204\344\275\215", 0));
-        ___qtreewidgetitem->setText(0, QApplication::translate("MainWindow", "133333", 0));
-
-        const bool __sortingEnabled = treeWidget_2->isSortingEnabled();
-        treeWidget_2->setSortingEnabled(false);
-        QTreeWidgetItem *___qtreewidgetitem1 = treeWidget_2->topLevelItem(0);
-        ___qtreewidgetitem1->setText(3, QApplication::translate("MainWindow", "12312", 0));
-        ___qtreewidgetitem1->setText(2, QApplication::translate("MainWindow", "123123", 0));
-        ___qtreewidgetitem1->setText(1, QApplication::translate("MainWindow", "12321", 0));
-        ___qtreewidgetitem1->setText(0, QApplication::translate("MainWindow", "\346\226\260\345\242\236\351\240\205\347\233\256", 0));
-        QTreeWidgetItem *___qtreewidgetitem2 = ___qtreewidgetitem1->child(0);
-        ___qtreewidgetitem2->setText(3, QApplication::translate("MainWindow", "2132", 0));
-        ___qtreewidgetitem2->setText(2, QApplication::translate("MainWindow", "213213", 0));
-        ___qtreewidgetitem2->setText(1, QApplication::translate("MainWindow", "2133", 0));
-        ___qtreewidgetitem2->setText(0, QApplication::translate("MainWindow", "12321", 0));
-        QTreeWidgetItem *___qtreewidgetitem3 = ___qtreewidgetitem2->child(0);
-        ___qtreewidgetitem3->setText(3, QApplication::translate("MainWindow", "213123", 0));
-        ___qtreewidgetitem3->setText(2, QApplication::translate("MainWindow", "213", 0));
-        ___qtreewidgetitem3->setText(1, QApplication::translate("MainWindow", "21332", 0));
-        ___qtreewidgetitem3->setText(0, QApplication::translate("MainWindow", "123122222", 0));
-        QTreeWidgetItem *___qtreewidgetitem4 = ___qtreewidgetitem2->child(1);
-        ___qtreewidgetitem4->setText(3, QApplication::translate("MainWindow", "2132", 0));
-        ___qtreewidgetitem4->setText(2, QApplication::translate("MainWindow", "21321", 0));
-        ___qtreewidgetitem4->setText(1, QApplication::translate("MainWindow", "21323", 0));
-        ___qtreewidgetitem4->setText(0, QApplication::translate("MainWindow", "1232121321", 0));
-        QTreeWidgetItem *___qtreewidgetitem5 = ___qtreewidgetitem1->child(1);
-        ___qtreewidgetitem5->setText(3, QApplication::translate("MainWindow", "213", 0));
-        ___qtreewidgetitem5->setText(2, QApplication::translate("MainWindow", "213213", 0));
-        ___qtreewidgetitem5->setText(1, QApplication::translate("MainWindow", "12312", 0));
-        ___qtreewidgetitem5->setText(0, QApplication::translate("MainWindow", "123", 0));
-        QTreeWidgetItem *___qtreewidgetitem6 = ___qtreewidgetitem5->child(0);
-        ___qtreewidgetitem6->setText(3, QApplication::translate("MainWindow", "123123", 0));
-        ___qtreewidgetitem6->setText(2, QApplication::translate("MainWindow", "2132", 0));
-        ___qtreewidgetitem6->setText(1, QApplication::translate("MainWindow", "1231231", 0));
-        ___qtreewidgetitem6->setText(0, QApplication::translate("MainWindow", "2131232321", 0));
-        QTreeWidgetItem *___qtreewidgetitem7 = ___qtreewidgetitem5->child(1);
-        ___qtreewidgetitem7->setText(3, QApplication::translate("MainWindow", "21323", 0));
-        ___qtreewidgetitem7->setText(2, QApplication::translate("MainWindow", "213", 0));
-        ___qtreewidgetitem7->setText(1, QApplication::translate("MainWindow", "213213", 0));
-        ___qtreewidgetitem7->setText(0, QApplication::translate("MainWindow", "12321321", 0));
-        QTreeWidgetItem *___qtreewidgetitem8 = treeWidget_2->topLevelItem(1);
-        ___qtreewidgetitem8->setText(0, QApplication::translate("MainWindow", "21321231231", 0));
-        QTreeWidgetItem *___qtreewidgetitem9 = ___qtreewidgetitem8->child(0);
-        ___qtreewidgetitem9->setText(0, QApplication::translate("MainWindow", "\346\226\260\345\242\236\345\255\220\351\240\205\347\233\256", 0));
-        treeWidget_2->setSortingEnabled(__sortingEnabled);
-
+        ___qtreewidgetitem->setText(2, QApplication::translate("MainWindow", "Port", 0));
+        ___qtreewidgetitem->setText(1, QApplication::translate("MainWindow", "IP", 0));
+        ___qtreewidgetitem->setText(0, QApplication::translate("MainWindow", "\346\234\215\345\213\231", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Tab 2", 0));
-        QTreeWidgetItem *___qtreewidgetitem10 = treeWidget->headerItem();
-        ___qtreewidgetitem10->setText(3, QApplication::translate("MainWindow", "123", 0));
-        ___qtreewidgetitem10->setText(2, QApplication::translate("MainWindow", "123", 0));
-        ___qtreewidgetitem10->setText(1, QApplication::translate("MainWindow", "\346\226\260\345\242\236\346\254\204\344\275\215", 0));
-        ___qtreewidgetitem10->setText(0, QApplication::translate("MainWindow", "133333", 0));
+        pushButton_3->setText(QApplication::translate("MainWindow", "Apply", 0));
+        pushButton_4->setText(QApplication::translate("MainWindow", "Search", 0));
+        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "Tab 3", 0));
+        QTreeWidgetItem *___qtreewidgetitem1 = treeWidget->headerItem();
+        ___qtreewidgetitem1->setText(3, QApplication::translate("MainWindow", "123", 0));
+        ___qtreewidgetitem1->setText(2, QApplication::translate("MainWindow", "123", 0));
+        ___qtreewidgetitem1->setText(1, QApplication::translate("MainWindow", "\346\226\260\345\242\236\346\254\204\344\275\215", 0));
+        ___qtreewidgetitem1->setText(0, QApplication::translate("MainWindow", "133333", 0));
 
-        const bool __sortingEnabled1 = treeWidget->isSortingEnabled();
+        const bool __sortingEnabled = treeWidget->isSortingEnabled();
         treeWidget->setSortingEnabled(false);
-        QTreeWidgetItem *___qtreewidgetitem11 = treeWidget->topLevelItem(0);
-        ___qtreewidgetitem11->setText(3, QApplication::translate("MainWindow", "12312", 0));
-        ___qtreewidgetitem11->setText(2, QApplication::translate("MainWindow", "123123", 0));
-        ___qtreewidgetitem11->setText(1, QApplication::translate("MainWindow", "12321", 0));
-        ___qtreewidgetitem11->setText(0, QApplication::translate("MainWindow", "\346\226\260\345\242\236\351\240\205\347\233\256", 0));
-        QTreeWidgetItem *___qtreewidgetitem12 = ___qtreewidgetitem11->child(0);
-        ___qtreewidgetitem12->setText(3, QApplication::translate("MainWindow", "2132", 0));
-        ___qtreewidgetitem12->setText(2, QApplication::translate("MainWindow", "213213", 0));
-        ___qtreewidgetitem12->setText(1, QApplication::translate("MainWindow", "2133", 0));
-        ___qtreewidgetitem12->setText(0, QApplication::translate("MainWindow", "12321", 0));
-        QTreeWidgetItem *___qtreewidgetitem13 = ___qtreewidgetitem12->child(0);
-        ___qtreewidgetitem13->setText(3, QApplication::translate("MainWindow", "213123", 0));
-        ___qtreewidgetitem13->setText(2, QApplication::translate("MainWindow", "213", 0));
-        ___qtreewidgetitem13->setText(1, QApplication::translate("MainWindow", "21332", 0));
-        ___qtreewidgetitem13->setText(0, QApplication::translate("MainWindow", "123122222", 0));
-        QTreeWidgetItem *___qtreewidgetitem14 = ___qtreewidgetitem12->child(1);
-        ___qtreewidgetitem14->setText(3, QApplication::translate("MainWindow", "2132", 0));
-        ___qtreewidgetitem14->setText(2, QApplication::translate("MainWindow", "21321", 0));
-        ___qtreewidgetitem14->setText(1, QApplication::translate("MainWindow", "21323", 0));
-        ___qtreewidgetitem14->setText(0, QApplication::translate("MainWindow", "1232121321", 0));
-        QTreeWidgetItem *___qtreewidgetitem15 = ___qtreewidgetitem11->child(1);
-        ___qtreewidgetitem15->setText(3, QApplication::translate("MainWindow", "213", 0));
-        ___qtreewidgetitem15->setText(2, QApplication::translate("MainWindow", "213213", 0));
-        ___qtreewidgetitem15->setText(1, QApplication::translate("MainWindow", "12312", 0));
-        ___qtreewidgetitem15->setText(0, QApplication::translate("MainWindow", "123", 0));
-        QTreeWidgetItem *___qtreewidgetitem16 = ___qtreewidgetitem15->child(0);
-        ___qtreewidgetitem16->setText(3, QApplication::translate("MainWindow", "123123", 0));
-        ___qtreewidgetitem16->setText(2, QApplication::translate("MainWindow", "2132", 0));
-        ___qtreewidgetitem16->setText(1, QApplication::translate("MainWindow", "1231231", 0));
-        ___qtreewidgetitem16->setText(0, QApplication::translate("MainWindow", "2131232321", 0));
-        QTreeWidgetItem *___qtreewidgetitem17 = ___qtreewidgetitem15->child(1);
-        ___qtreewidgetitem17->setText(3, QApplication::translate("MainWindow", "21323", 0));
-        ___qtreewidgetitem17->setText(2, QApplication::translate("MainWindow", "213", 0));
-        ___qtreewidgetitem17->setText(1, QApplication::translate("MainWindow", "213213", 0));
-        ___qtreewidgetitem17->setText(0, QApplication::translate("MainWindow", "12321321", 0));
-        QTreeWidgetItem *___qtreewidgetitem18 = treeWidget->topLevelItem(1);
-        ___qtreewidgetitem18->setText(0, QApplication::translate("MainWindow", "21321231231", 0));
-        QTreeWidgetItem *___qtreewidgetitem19 = ___qtreewidgetitem18->child(0);
-        ___qtreewidgetitem19->setText(0, QApplication::translate("MainWindow", "\346\226\260\345\242\236\345\255\220\351\240\205\347\233\256", 0));
-        treeWidget->setSortingEnabled(__sortingEnabled1);
+        QTreeWidgetItem *___qtreewidgetitem2 = treeWidget->topLevelItem(0);
+        ___qtreewidgetitem2->setText(3, QApplication::translate("MainWindow", "12312", 0));
+        ___qtreewidgetitem2->setText(2, QApplication::translate("MainWindow", "123123", 0));
+        ___qtreewidgetitem2->setText(1, QApplication::translate("MainWindow", "12321", 0));
+        ___qtreewidgetitem2->setText(0, QApplication::translate("MainWindow", "\346\226\260\345\242\236\351\240\205\347\233\256", 0));
+        QTreeWidgetItem *___qtreewidgetitem3 = ___qtreewidgetitem2->child(0);
+        ___qtreewidgetitem3->setText(3, QApplication::translate("MainWindow", "2132", 0));
+        ___qtreewidgetitem3->setText(2, QApplication::translate("MainWindow", "213213", 0));
+        ___qtreewidgetitem3->setText(1, QApplication::translate("MainWindow", "2133", 0));
+        ___qtreewidgetitem3->setText(0, QApplication::translate("MainWindow", "12321", 0));
+        QTreeWidgetItem *___qtreewidgetitem4 = ___qtreewidgetitem3->child(0);
+        ___qtreewidgetitem4->setText(3, QApplication::translate("MainWindow", "213123", 0));
+        ___qtreewidgetitem4->setText(2, QApplication::translate("MainWindow", "213", 0));
+        ___qtreewidgetitem4->setText(1, QApplication::translate("MainWindow", "21332", 0));
+        ___qtreewidgetitem4->setText(0, QApplication::translate("MainWindow", "123122222", 0));
+        QTreeWidgetItem *___qtreewidgetitem5 = ___qtreewidgetitem3->child(1);
+        ___qtreewidgetitem5->setText(3, QApplication::translate("MainWindow", "2132", 0));
+        ___qtreewidgetitem5->setText(2, QApplication::translate("MainWindow", "21321", 0));
+        ___qtreewidgetitem5->setText(1, QApplication::translate("MainWindow", "21323", 0));
+        ___qtreewidgetitem5->setText(0, QApplication::translate("MainWindow", "1232121321", 0));
+        QTreeWidgetItem *___qtreewidgetitem6 = ___qtreewidgetitem2->child(1);
+        ___qtreewidgetitem6->setText(3, QApplication::translate("MainWindow", "213", 0));
+        ___qtreewidgetitem6->setText(2, QApplication::translate("MainWindow", "213213", 0));
+        ___qtreewidgetitem6->setText(1, QApplication::translate("MainWindow", "12312", 0));
+        ___qtreewidgetitem6->setText(0, QApplication::translate("MainWindow", "123", 0));
+        QTreeWidgetItem *___qtreewidgetitem7 = ___qtreewidgetitem6->child(0);
+        ___qtreewidgetitem7->setText(3, QApplication::translate("MainWindow", "123123", 0));
+        ___qtreewidgetitem7->setText(2, QApplication::translate("MainWindow", "2132", 0));
+        ___qtreewidgetitem7->setText(1, QApplication::translate("MainWindow", "1231231", 0));
+        ___qtreewidgetitem7->setText(0, QApplication::translate("MainWindow", "2131232321", 0));
+        QTreeWidgetItem *___qtreewidgetitem8 = ___qtreewidgetitem6->child(1);
+        ___qtreewidgetitem8->setText(3, QApplication::translate("MainWindow", "21323", 0));
+        ___qtreewidgetitem8->setText(2, QApplication::translate("MainWindow", "213", 0));
+        ___qtreewidgetitem8->setText(1, QApplication::translate("MainWindow", "213213", 0));
+        ___qtreewidgetitem8->setText(0, QApplication::translate("MainWindow", "12321321", 0));
+        QTreeWidgetItem *___qtreewidgetitem9 = treeWidget->topLevelItem(1);
+        ___qtreewidgetitem9->setText(0, QApplication::translate("MainWindow", "21321231231", 0));
+        QTreeWidgetItem *___qtreewidgetitem10 = ___qtreewidgetitem9->child(0);
+        ___qtreewidgetitem10->setText(0, QApplication::translate("MainWindow", "\346\226\260\345\242\236\345\255\220\351\240\205\347\233\256", 0));
+        treeWidget->setSortingEnabled(__sortingEnabled);
 
         menu->setTitle(QApplication::translate("MainWindow", "\346\252\224\346\241\210", 0));
         menu02->setTitle(QApplication::translate("MainWindow", "02", 0));

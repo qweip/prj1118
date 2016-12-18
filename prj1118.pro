@@ -14,11 +14,15 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    ConnA.cpp
+    ConnA.cpp \
+    interface_thread.cpp \
+    updater.cpp
 
 HEADERS  += mainwindow.h \
     ConnA.hpp \
-    sniff.hpp
+    sniff.hpp \
+    interface_thread.hpp \
+    updater.hpp
 
 FORMS    += mainwindow.ui
 
@@ -32,6 +36,6 @@ win32 {
 }
 
 unix:!macx {
-#------------wpcap---------------
+#------------libpcap---------------
   LIBS += -lpcap
 }

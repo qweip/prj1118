@@ -30,7 +30,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -123,150 +123,63 @@ p, li { white-space: pre-wrap; }
          <widget class="QTreeWidget" name="treeWidget_2">
           <column>
            <property name="text">
-            <string>133333</string>
+            <string>服務</string>
            </property>
           </column>
           <column>
            <property name="text">
-            <string>新增欄位</string>
+            <string>IP</string>
            </property>
           </column>
           <column>
            <property name="text">
-            <string>123</string>
+            <string>Port</string>
            </property>
           </column>
-          <column>
-           <property name="text">
-            <string>123</string>
-           </property>
-          </column>
-          <item>
-           <property name="text">
-            <string>新增項目</string>
-           </property>
-           <property name="toolTip">
-            <string/>
-           </property>
-           <property name="text">
-            <string>12321</string>
-           </property>
-           <property name="text">
-            <string>123123</string>
-           </property>
-           <property name="text">
-            <string>12312</string>
-           </property>
-           <property name="flags">
-            <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-           </property>
-           <item>
-            <property name="text">
-             <string>12321</string>
-            </property>
-            <property name="checkState">
-             <enum>Checked</enum>
-            </property>
-            <property name="text">
-             <string>2133</string>
-            </property>
-            <property name="text">
-             <string>213213</string>
-            </property>
-            <property name="text">
-             <string>2132</string>
-            </property>
-            <item>
-             <property name="text">
-              <string>123122222</string>
-             </property>
-             <property name="checkState">
-              <enum>Checked</enum>
-             </property>
-             <property name="text">
-              <string>21332</string>
-             </property>
-             <property name="text">
-              <string>213</string>
-             </property>
-             <property name="text">
-              <string>213123</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>1232121321</string>
-             </property>
-             <property name="checkState">
-              <enum>Checked</enum>
-             </property>
-             <property name="text">
-              <string>21323</string>
-             </property>
-             <property name="text">
-              <string>21321</string>
-             </property>
-             <property name="text">
-              <string>2132</string>
-             </property>
-            </item>
-           </item>
-           <item>
-            <property name="text">
-             <string>123</string>
-            </property>
-            <property name="text">
-             <string>12312</string>
-            </property>
-            <property name="text">
-             <string>213213</string>
-            </property>
-            <property name="text">
-             <string>213</string>
-            </property>
-            <item>
-             <property name="text">
-              <string>2131232321</string>
-             </property>
-             <property name="text">
-              <string>1231231</string>
-             </property>
-             <property name="text">
-              <string>2132</string>
-             </property>
-             <property name="text">
-              <string>123123</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>12321321</string>
-             </property>
-             <property name="text">
-              <string>213213</string>
-             </property>
-             <property name="text">
-              <string>213</string>
-             </property>
-             <property name="text">
-              <string>21323</string>
-             </property>
-            </item>
-           </item>
-          </item>
-          <item>
-           <property name="text">
-            <string>21321231231</string>
-           </property>
-           <item>
-            <property name="text">
-             <string>新增子項目</string>
-            </property>
-           </item>
-          </item>
          </widget>
         </item>
        </layout>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>Tab 3</string>
+       </attribute>
+       <widget class="QListWidget" name="listWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>431</width>
+          <height>281</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="geometry">
+         <rect>
+          <x>360</x>
+          <y>310</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Apply</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_4">
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>310</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Search</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </item>

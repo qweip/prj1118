@@ -9,12 +9,14 @@
 #include <QLCDNumber>
 //#include "model.h"
 
+MainWindow *_w;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
     MainWindow w;
     w.show();
+    _w = &w;
 
     /*QLabel *label = new QLabel(
      "<h1><font color=blue>Hello World!</font><font color=red>123<font><h1>");
