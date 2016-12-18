@@ -10,9 +10,9 @@ class Capturer : public QObject
 {
     Q_OBJECT
 
-    const char *devname;
-    IPPacketInput *ref_pkts;
-    QMutex *mutex;
+    const char *devname; //ref
+    IPPacketInput *ref_pkts; //ref
+    QMutex *mutex; //ref
 
 public:
     void SetDevName(const char *_devname);
@@ -33,9 +33,9 @@ class ITHControl : public QObject
 
     QThread workerThread;
     pcap_if_t in;
-    char *_result;
-    IPPacketInput *ref_pkts;
-    QMutex *mutex;
+    char *_result; //clean outside
+    IPPacketInput *ref_pkts; //ref
+    QMutex *mutex; //auto
 
 public:
     ITHControl(const pcap_if_t dev, IPPacketInput *pkts);
@@ -46,7 +46,8 @@ public:
     bool isFinished() const;
     const char* GetResult() const;
     void GetInterface(pcap_if_t *dev) const;
-    QMutex* GetMutex() const;
+    QMutex* GetMutex();
+    IPPacketInput* GetIPPacketInput();
 
 public slots:
     void handleResults(char *result);

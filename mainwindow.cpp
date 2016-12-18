@@ -3,13 +3,22 @@
 #include "ui_mainwindow.h"
 #include "ConnA.hpp"
 #include "interface_thread.hpp"
+#include "updater.hpp"
 
 #define MAX_DEV_NAME 256
 
 char pcapErrBuf[PCAP_ERRBUF_SIZE];
 
+pcap_if_t *head = 0;
+
+pcap_if_t *devs;
 char **devNames = 0;
 uint nDevs = 0;
+
+UpdateControl *_update = 0;
+ITHControl *monDevs = 0;
+IPPacketInput *pkts = 0;
+uint nMonDevs = 0;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -40,9 +49,10 @@ static void FindAllInterfaces(QListWidget *qlw) {
     QString *qs;
     QListWidgetItem *litem;
     size_t totalStrLen;
-    pcap_if_t *head, *cur;
+    pcap_if_t *cur;
     uint count, i;
 
+    if(head) pcap_freealldevs(head);
     if(pcap_findalldevs(&head, pcapErrBuf) != 0) {
         ShowNormalMsgBox(pcapErrBuf);
         return;
@@ -86,15 +96,20 @@ static void FindAllInterfaces(QListWidget *qlw) {
     }
     devNames = new char*[count];
 
+    if(devs) delete[] devs;
+    devs = new pcap_if_t[count];
+
     cur = head;
     for(i = 0; i < count; i += 1, cur = cur->next) {
         strncpy(devName, cur->name, sizeof(devName) - 1);
+
         devNames[i] = new char[(totalStrLen = strlen(devName)) + 1];
         memcpy(devNames[i], devName, totalStrLen + 1);
+
+        memcpy(devs + i, cur, sizeof(*cur));
+        devs[i].next = 0;
     }
     nDevs = count;
-
-    pcap_freealldevs(head);
 }
 
 void MainWindow::on_pushButton_4_clicked()
@@ -104,5 +119,61 @@ void MainWindow::on_pushButton_4_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
+    QListWidgetItem *item;
+    int i, j, c, d;
+    uint u;
 
+    c = ui->listWidget->count();
+    d = 0;
+    for(i = 0; i < c; i += 1) {
+        item = ui->listWidget->item(i);
+        if(item->checkState() == Qt::Checked)
+            d += 1;
+    }
+
+    if(monDevs) {
+        for(u = 0; u < nMonDevs; u += 1) monDevs[u].~ITHControl();
+        free(monDevs);
+    }
+    monDevs = (ITHControl*)malloc(sizeof(*monDevs) * d);
+
+    if(pkts) delete[] pkts;
+    pkts = new IPPacketInput[d];
+
+    j = 0;
+    for(i = 0; i < c; i += 1) {
+        item = ui->listWidget->item(i);
+        if(item->checkState() == Qt::Checked) {
+            new (monDevs + j) ITHControl(devs[i], pkts + j);
+            monDevs[j].operate();
+            j += 1;
+        }
+    }
+
+    nMonDevs = d;
+    if(_update) delete _update;
+    _update = new UpdateControl(monDevs, nMonDevs);
+    _update->operate();
+
+    ui->pushButton_3->setEnabled(false);
+    ui->pushButton_4->setEnabled(false);
+}
+
+void MainWindow::UIClear() {
+    ui->treeWidget_2->clear();
+}
+
+void MainWindow::UIAddTop(const char *text, QTreeWidgetItem **item) {
+    QTreeWidgetItem *_item;
+    _item = new QTreeWidgetItem(ui->treeWidget_2);
+    _item->setText(0, tr(text));
+    *item = _item;
+}
+
+void MainWindow::UIAddSubItem(QTreeWidgetItem *parent, QTreeWidgetItem **item) {
+    *item = new QTreeWidgetItem(parent);
+}
+
+void MainWindow::UISetText(QTreeWidgetItem* item, int col, const char *text) {
+    if(item) item->setText(col, tr(text));
 }

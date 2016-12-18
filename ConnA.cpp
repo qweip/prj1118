@@ -103,6 +103,12 @@ void IPPacketInput::add(IPPacket *pkt) {
     n += 1;
 }
 
+void IPPacketInput::clear() {
+    free(p);
+    p = (IPPacket*)malloc(0);
+    n = c = 0;
+}
+
 int File2DS(const char *filename, IPPacketInput &pkts, void ***memPtr) {
     char errbuf[PCAP_ERRBUF_SIZE];
     struct pcap_pkthdr ph;
@@ -132,22 +138,39 @@ int File2DS(const char *filename, IPPacketInput &pkts, void ***memPtr) {
 }
 
 //ConnState
-ushort ConnState::GetVer(){
+ushort ConnState::GetVer() const{
     return version;
 }
 //init
 ConnState::ConnState():version(0),ip(),dport(0),state(0){}
 
-char* ConnState::GetIP(){
+const char* ConnState::GetIP() const{
     return ip;
 }
 
-ushort ConnState::GetPort() {
+ushort ConnState::GetPort() const {
     return dport;
 }
 
-uint32_t ConnState::GetState(){
+uint32_t ConnState::GetState() const{
     return state;
+}
+
+void ConnState::IP2Str(char *buf, const char *ip, ushort version) {
+    switch(version) {
+    case 4:
+        sprintf(buf, "%hu.%hu.%hu.%hu", (ushort)((const uchar *)ip)[0], (ushort)((const uchar *)ip)[1], (ushort)((const uchar *)ip)[2], (ushort)((const uchar *)ip)[3]);
+        break;
+    case 6:
+        sprintf(buf, "%hu%hu:%hu%hu:%hu%hu:%hu%hu:%hu%hu:%hu%hu:%hu%hu:%hu%hu",
+                (ushort)((const uchar *)ip)[0], (ushort)((const uchar *)ip)[1], (ushort)((const uchar *)ip)[2], (ushort)((const uchar *)ip)[3],
+                (ushort)((const uchar *)ip)[4], (ushort)((const uchar *)ip)[5], (ushort)((const uchar *)ip)[6], (ushort)((const uchar *)ip)[7],
+                (ushort)((const uchar *)ip)[8], (ushort)((const uchar *)ip)[8], (ushort)((const uchar *)ip)[10], (ushort)((const uchar *)ip)[11],
+                (ushort)((const uchar *)ip)[12], (ushort)((const uchar *)ip)[14], (ushort)((const uchar *)ip)[14], (ushort)((const uchar *)ip)[15]);
+        break;
+    default:
+        break;
+    }
 }
 
 
@@ -199,6 +222,10 @@ static int CScmp(const void *a, const void *b) {
     else return 0;
 }
 
+ConnStateOutput::~ConnStateOutput() {
+    free(p);
+}
+
 void ConnStateOutput::add(const ConnState &output)
 {
     ConnState *t;
@@ -211,10 +238,11 @@ void ConnStateOutput::add(const ConnState &output)
     qsort(p, n, sizeof(*p), CScmp);
 }
 
-uint32_t ConnStateOutput::checkConn(char clientIP[],uint32_t clientPort){
+uint32_t ConnStateOutput::checkConn(char clientIP[], uint32_t clientPort, ushort ver){
     ConnState *res;
     ConnState key;
 
+    key.SetVer(ver);
     key.SetIP(clientIP);
     key.SetPort(clientPort);
     res = (ConnState*)bsearch(&key,p, n, sizeof(*p), CScmp);
@@ -231,23 +259,20 @@ unsigned int ConnStateOutput::N() const {
     return n;
 }
 
-
-
-int FB(IPPacketInput input, ConnStateOutput& output,char* app) {
-
+int FB(IPPacketInput input, ConnStateOutput& output, const char *app) {
     ConnState state;
     sniff_ip* ip;
     sniff_tcp* tcp;
-    uint32_t ts[3]={0},index = 0,ipHeaderLen,totalLength, lastSeen=0, nConBig = 0;
+    uint32_t ts[3]={0},index = 0,ipHeaderLen,totalLength, lastSeen=0, nConBig = 0, n;
     ushort ver,serverPort,clientPort;
     uchar Proto;
-    uchar* pkt;
-
+    const uchar* pkt;
 
     char serverIP[256],clientIP[MAX_ADDR_LEN];
 
-    while(input[index].GetDataPtr()){
-        pkt=NULL;
+    n = input.N();
+    for(index = 0; index < n; index += 1) {
+        pkt = input[index].GetDataPtr();
         ip  = (sniff_ip*)pkt;
         ver = (ip->ip_vhl) >> 4;
         Proto = ip->ip_p;
@@ -271,17 +296,19 @@ int FB(IPPacketInput input, ConnStateOutput& output,char* app) {
             //if(strstr(app,"facebook") != NULL)
             if(ver == 4){
                 //tcp?
-                if(!(Proto == 6))break;
+                if(!(Proto == 6)) { break; }
 
                 //443?
-                if(!(serverPort == 443))break;
+                if(!(serverPort == 443)) { ts[0] += 1; break; }
 
-                //DNS Reverse lookup
-                QHostInfo HI = QHostInfo::fromName(serverIP);
-                if(strstr((HI.hostName().toStdString().c_str()),app)==NULL)break;
+                //DNS Reverse lookup (1.耗時非常久 2.確定這是反查??)
+                //QHostInfo HI = QHostInfo::fromName(serverIP);
+                //if(strstr((HI.hostName().toStdString().c_str()),app)==NULL)break;
+
+                if((size_t)strstr(serverIP, "31.13.") != (size_t)serverIP) { ts[0] += 1; break; }
 
                 //checkconn
-                if(output.checkConn(clientIP,clientPort))break;
+                if(output.checkConn(clientIP,clientPort,ver))break;
 
 
                 //state 簡單處理...
@@ -296,11 +323,13 @@ int FB(IPPacketInput input, ConnStateOutput& output,char* app) {
 
                 if (nConBig >= 10) {
                     state.SetState(2);
+                    ts[2] += 1;
                 }
                 if(input[index].GetSec() - lastSeen) {
                     if (nConBig <= 5) {
                         //background
                         state.SetState(1);
+                        ts[1] += 1;
                     }
                 }
                 state.SetVer(ver);
@@ -317,7 +346,6 @@ int FB(IPPacketInput input, ConnStateOutput& output,char* app) {
             //if(strstr(app,"line") != NULL);
              break;
         }
-        index++;
     }
 
     if(ts[2] > 0) return 2;

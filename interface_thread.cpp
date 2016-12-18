@@ -5,7 +5,7 @@ void Capturer::doWork() {
     IPPacket ipp;
     char *result = new char[PCAP_ERRBUF_SIZE];
     const u_char *pdata, *npdata;
-    pcap_pkthdr phktdr;
+    pcap_pkthdr *phktdr;
     pcap_t *phandle;
 
     phandle = pcap_create(devname, result);
@@ -21,17 +21,28 @@ void Capturer::doWork() {
         return;
     }
 
-    while((pdata = pcap_next(phandle, &phktdr))) {
-        npdata = (unsigned char*)malloc(sizeof(*npdata) * phktdr.caplen);
-        ipp.SetDataPtr(npdata);
-        ipp.SetSec((phktdr.ts).tv_sec);
-        ipp.SetNsec((phktdr.ts).tv_usec);
+    if(pcap_datalink(phandle) == DLT_EN10MB) {
+        while(pcap_next_ex(phandle, &phktdr, &pdata) >= 0) {
+            npdata = (unsigned char*)malloc(sizeof(*npdata) * phktdr->caplen);
+            memcpy((uchar*)npdata, pdata, phktdr->caplen);
 
-        mutex->lock();
-        (*ref_pkts).add(&ipp);
-        mutex->unlock();
+            if(
+                    (npdata[12] == 0x08 && npdata[13] == 0x00) ||  //IPv4
+                    (npdata[12] == 0x86 && npdata[13] == 0xDD)     //IPv6
+                    )
+            {
+                ipp.SetDataPtr(npdata + 14);
+                ipp.SetSec((phktdr->ts).tv_sec);
+                ipp.SetNsec((phktdr->ts).tv_usec);
+
+                mutex->lock();
+                (*ref_pkts).add(&ipp);
+                mutex->unlock();
+            }
+        }
     }
 
+    pcap_close(phandle);
     memset(result, 0, PCAP_ERRBUF_SIZE);
     emit resultReady(result);
 }
@@ -59,6 +70,7 @@ ITHControl::ITHControl(const pcap_if_t dev, IPPacketInput *pkts) {
 
     worker->SetDevName(in.name);
     worker->SetContainer(pkts);
+    worker->SetMutex(mutex);
 
     worker->moveToThread(&workerThread);
     connect(&workerThread, &QThread::finished, worker, &QObject::deleteLater);
@@ -68,8 +80,8 @@ ITHControl::ITHControl(const pcap_if_t dev, IPPacketInput *pkts) {
 }
 
 ITHControl::~ITHControl() {
-    workerThread.quit();
-    workerThread.wait();
+    if(workerThread.isRunning())
+        workerThread.terminate();
     delete mutex;
 }
 
@@ -93,6 +105,10 @@ void ITHControl::GetInterface(pcap_if_t *dev) const {
     memcpy(dev, &in, sizeof(in));
 }
 
-QMutex* ITHControl::GetMutex() const {
+QMutex* ITHControl::GetMutex() {
     return mutex;
+}
+
+IPPacketInput* ITHControl::GetIPPacketInput() {
+    return ref_pkts;
 }

@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMutex>
+#include <QTreeWidgetItem>
 
 namespace Ui {
 class MainWindow;
@@ -24,6 +26,11 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-};
 
+public slots:
+    void UIClear();
+    void UIAddTop(const char *text, QTreeWidgetItem **item);
+    void UIAddSubItem(QTreeWidgetItem *parent, QTreeWidgetItem **item);
+    void UISetText(QTreeWidgetItem* item, int col, const char *text);
+};
 #endif // MAINWINDOW_H
