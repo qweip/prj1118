@@ -1,8 +1,10 @@
 #include "interface_thread.hpp"
+#include "ConnA.hpp"
 
 void Capturer::doWork() {
+    IPPacket ipp;
     char *result = new char[PCAP_ERRBUF_SIZE];
-    const u_char *pdata;
+    const u_char *pdata, *npdata;
     pcap_pkthdr phktdr;
     pcap_t *phandle;
 
@@ -20,7 +22,14 @@ void Capturer::doWork() {
     }
 
     while((pdata = pcap_next(phandle, &phktdr))) {
+        npdata = (unsigned char*)malloc(sizeof(*npdata) * phktdr.caplen);
+        ipp.SetDataPtr(npdata);
+        ipp.SetSec((phktdr.ts).tv_sec);
+        ipp.SetNsec((phktdr.ts).tv_usec);
 
+        mutex->lock();
+        (*ref_pkts).add(&ipp);
+        mutex->unlock();
     }
 
     memset(result, 0, PCAP_ERRBUF_SIZE);
@@ -31,12 +40,26 @@ void Capturer::SetDevName(const char *_devname) {
     devname = _devname;
 }
 
-ITHControl::ITHControl(const pcap_if_t dev) {
+void Capturer::SetContainer(IPPacketInput *pkts) {
+    ref_pkts = pkts;
+}
+
+void Capturer::SetMutex(QMutex *m) {
+    mutex = m;
+}
+
+ITHControl::ITHControl(const pcap_if_t dev, IPPacketInput *pkts) {
     in = dev;
     in.next = 0;
+    _result = 0;
+    ref_pkts = pkts;
+    mutex = new QMutex();
 
     Capturer *worker = new Capturer;
+
     worker->SetDevName(in.name);
+    worker->SetContainer(pkts);
+
     worker->moveToThread(&workerThread);
     connect(&workerThread, &QThread::finished, worker, &QObject::deleteLater);
     connect(this, &ITHControl::operate, worker, &Capturer::doWork);
@@ -47,6 +70,7 @@ ITHControl::ITHControl(const pcap_if_t dev) {
 ITHControl::~ITHControl() {
     workerThread.quit();
     workerThread.wait();
+    delete mutex;
 }
 
 void ITHControl::handleResults(char *result) {
@@ -67,4 +91,8 @@ const char* ITHControl::GetResult() const {
 
 void ITHControl::GetInterface(pcap_if_t *dev) const {
     memcpy(dev, &in, sizeof(in));
+}
+
+QMutex* ITHControl::GetMutex() const {
+    return mutex;
 }
