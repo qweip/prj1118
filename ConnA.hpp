@@ -9,6 +9,7 @@
 #endif
 #ifdef __linux__
 #include <sys/socket.h>
+#include <arpa/inet.h>
 #endif
 #include <QApplication>
 

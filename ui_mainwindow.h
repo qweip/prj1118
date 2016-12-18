@@ -16,6 +16,7 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -54,6 +55,10 @@ public:
     QWidget *tab_2;
     QGridLayout *gridLayout_4;
     QTreeWidget *treeWidget_2;
+    QWidget *tab_3;
+    QListWidget *listWidget;
+    QPushButton *pushButton_3;
+    QPushButton *pushButton_4;
     QTreeWidget *treeWidget;
     QMenuBar *menuBar;
     QMenu *menu;
@@ -160,6 +165,18 @@ public:
         gridLayout_4->addWidget(treeWidget_2, 0, 0, 1, 1);
 
         tabWidget->addTab(tab_2, QString());
+        tab_3 = new QWidget();
+        tab_3->setObjectName(QStringLiteral("tab_3"));
+        listWidget = new QListWidget(tab_3);
+        listWidget->setObjectName(QStringLiteral("listWidget"));
+        listWidget->setGeometry(QRect(10, 10, 431, 281));
+        pushButton_3 = new QPushButton(tab_3);
+        pushButton_3->setObjectName(QStringLiteral("pushButton_3"));
+        pushButton_3->setGeometry(QRect(360, 310, 75, 23));
+        pushButton_4 = new QPushButton(tab_3);
+        pushButton_4->setObjectName(QStringLiteral("pushButton_4"));
+        pushButton_4->setGeometry(QRect(280, 310, 75, 23));
+        tabWidget->addTab(tab_3, QString());
 
         gridLayout_3->addWidget(tabWidget, 1, 0, 2, 1);
 
@@ -207,7 +224,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -295,6 +312,9 @@ public:
         treeWidget_2->setSortingEnabled(__sortingEnabled);
 
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Tab 2", 0));
+        pushButton_3->setText(QApplication::translate("MainWindow", "Apply", 0));
+        pushButton_4->setText(QApplication::translate("MainWindow", "Search", 0));
+        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "Tab 3", 0));
         QTreeWidgetItem *___qtreewidgetitem10 = treeWidget->headerItem();
         ___qtreewidgetitem10->setText(3, QApplication::translate("MainWindow", "123", 0));
         ___qtreewidgetitem10->setText(2, QApplication::translate("MainWindow", "123", 0));
