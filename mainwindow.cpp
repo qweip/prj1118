@@ -1,8 +1,15 @@
+#include <QMessageBox>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "ConnA.hpp"
+#include "interface_thread.hpp"
+
+#define MAX_DEV_NAME 256
 
 char pcapErrBuf[PCAP_ERRBUF_SIZE];
+
+char **devNames = 0;
+uint nDevs = 0;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,27 +23,32 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-    MessageBoxA(0, "Button Clicked", "Info", MB_OK);
+static void ShowNormalMsgBox(const char *msg) {
+    QMessageBox msgBox;
+    msgBox.setText(msg);
+    msgBox.exec();
 }
 
-void MainWindow::on_pushButton_4_clicked()
+void MainWindow::on_pushButton_clicked()
 {
-    char addrStr[64], netmaskStr[64], buf[32], *_addr, *interfaceInfo;
+    ShowNormalMsgBox("Button1 clicked");
+}
+
+static void FindAllInterfaces(QListWidget *qlw) {
+    char devName[MAX_DEV_NAME], addrStr[64], netmaskStr[64], buf[32], *_addr, *interfaceInfo;
     sockaddr_in addrIn;
     QString *qs;
     QListWidgetItem *litem;
     size_t totalStrLen;
     pcap_if_t *head, *cur;
-    uint count = 0;
+    uint count, i;
 
     if(pcap_findalldevs(&head, pcapErrBuf) != 0) {
-        MessageBoxA(0, pcapErrBuf, "Error", MB_OK);
+        ShowNormalMsgBox(pcapErrBuf);
         return;
     }
 
-    ui->listWidget->clear();
+    qlw->clear();
     cur = head;
     count = 0;
     while(cur) {
@@ -53,11 +65,11 @@ void MainWindow::on_pushButton_4_clicked()
         sprintf(interfaceInfo, "%s (%s/%s)", cur->description, addrStr, netmaskStr);
         qs = new QString(interfaceInfo);
 
-        ui->listWidget->addItem(*qs);
+        qlw->addItem(*qs);
         delete[] interfaceInfo;
         delete qs;
 
-        litem = ui->listWidget->item(count);
+        litem = qlw->item(count);
         litem->setFlags(litem->flags() | Qt::ItemIsUserCheckable);
         litem->setCheckState(Qt::Unchecked);
 
@@ -66,7 +78,31 @@ void MainWindow::on_pushButton_4_clicked()
     }
 
     sprintf(buf, "%u interfaces found.", count);
-    MessageBoxA(0, buf, "Info", MB_OK);
+    ShowNormalMsgBox(buf);
+
+    if(devNames) {
+        for(i = 0; i < nDevs; i += 1) delete[] devNames[i];
+        delete[] devNames;
+    }
+    devNames = new char*[count];
+
+    cur = head;
+    for(i = 0; i < count; i += 1, cur = cur->next) {
+        strncpy(devName, cur->name, sizeof(devName) - 1);
+        devNames[i] = new char[(totalStrLen = strlen(devName)) + 1];
+        memcpy(devNames[i], devName, totalStrLen + 1);
+    }
+    nDevs = count;
 
     pcap_freealldevs(head);
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    FindAllInterfaces(ui->listWidget);
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+
 }

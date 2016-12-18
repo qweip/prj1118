@@ -14,11 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    ConnA.cpp
+    ConnA.cpp \
+    interface_thread.cpp
 
 HEADERS  += mainwindow.h \
     ConnA.hpp \
-    sniff.hpp
+    sniff.hpp \
+    interface_thread.hpp
 
 FORMS    += mainwindow.ui
 
