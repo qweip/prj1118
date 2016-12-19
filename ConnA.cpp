@@ -3,6 +3,8 @@
 
 #include <QApplication>
 #include <QHostInfo>
+#include <QMessageBox>
+#include "mainwindow.h"
 
 #include <pcap.h>
 
@@ -299,13 +301,18 @@ int FB(IPPacketInput input, ConnStateOutput& output, const char *app) {
                 if(!(Proto == 6)) { break; }
 
                 //443?
-                if(!(serverPort == 443)) { ts[0] += 1; break; }
+                if(!(serverPort == 443)) { break; }
 
-                //DNS Reverse lookup (1.耗時非常久 2.確定這是反查??)
-                //QHostInfo HI = QHostInfo::fromName(serverIP);
-                //if(strstr((HI.hostName().toStdString().c_str()),app)==NULL)break;
+                //DNS Reverse lookup
+                /*QHostInfo HI = QHostInfo::fromName(serverIP);
+                if(HI.error() == QHostInfo::NoError) {
+                    if(strstr((HI.hostName().toStdString().c_str()), app) == NULL)
+                        break;
+                }
+                else break;*/
 
-                if((size_t)strstr(serverIP, "31.13.") != (size_t)serverIP) { ts[0] += 1; break; }
+                if((size_t)strstr(serverIP, "31.13.") != (size_t)serverIP) break;
+
 
                 //checkconn
                 if(output.checkConn(clientIP,clientPort,ver))break;

@@ -167,6 +167,7 @@ void MainWindow::UIAddTop(const char *text, QTreeWidgetItem **item) {
     QTreeWidgetItem *_item;
     _item = new QTreeWidgetItem(ui->treeWidget_2);
     _item->setText(0, tr(text));
+    _item->setExpanded(true);
     *item = _item;
 }
 

@@ -74,18 +74,11 @@ void Updater::doWork() {
             //item->setText(0, tr("Facebook"));
             UIAddTop("Facebook", &item);
             for(i = 0; i < n; i += 1) {
-                if(!controls[i].isRunnung()) {
-                    QMessageBox msgBox;
-                    msgBox.setText("Thread stopped");
-                    msgBox.exec();
-                    msgBox.setText(controls[i].GetResult());
-                    msgBox.exec();
-                }
-                pkts = controls[i].GetIPPacketInput();
                 m = controls[i].GetMutex();
-                o = new ConnStateOutput();
-
                 m->lock();
+
+                pkts = controls[i].GetIPPacketInput();
+                o = new ConnStateOutput();
 
                 if(FB(*pkts, *o, "facebook") > 0) {
                     k = o->N();
