@@ -2,7 +2,7 @@
 #include <QMessageBox>
 #include "mainwindow.h"
 
-#define UPDATE_TIME 10
+#define UPDATE_TIME 3
 static time_t lastUpdate = 0;
 
 UpdateControl::UpdateControl(ITHControl *_controls, uint _n) {

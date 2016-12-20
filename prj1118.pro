@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network
 
 TARGET = prj1118
 TEMPLATE = app
@@ -16,13 +16,15 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     ConnA.cpp \
     interface_thread.cpp \
-    updater.cpp
+    updater.cpp \
+    dnshandler.cpp
 
 HEADERS  += mainwindow.h \
     ConnA.hpp \
     sniff.hpp \
     interface_thread.hpp \
-    updater.hpp
+    updater.hpp \
+    dnshandler.hpp
 
 FORMS    += mainwindow.ui
 

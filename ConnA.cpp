@@ -2,9 +2,11 @@
 
 
 #include <QApplication>
-#include <QHostInfo>
+#include <QDnsLookup>
 #include <QMessageBox>
+#include <QSemaphore>
 #include "mainwindow.h"
+#include "dnshandler.hpp"
 
 #include <pcap.h>
 
@@ -270,7 +272,7 @@ int FB(IPPacketInput input, ConnStateOutput& output, const char *app) {
     uchar Proto;
     const uchar* pkt;
 
-    char serverIP[256],clientIP[MAX_ADDR_LEN];
+    char serverIP[256], serverIPreverse[256] ,clientIP[MAX_ADDR_LEN];
 
     n = input.N();
     for(index = 0; index < n; index += 1) {
@@ -282,6 +284,8 @@ int FB(IPPacketInput input, ConnStateOutput& output, const char *app) {
         totalLength= ntohs(ip->ip_len);
         sprintf(serverIP ,"%u.%u.%u.%u" ,ip->saddr.byte1,
             ip->saddr.byte2 ,ip->saddr.byte3 ,ip->saddr.byte4);
+        sprintf(serverIPreverse ,"%u.%u.%u.%u.in-addr.arpa" ,ip->saddr.byte4,
+            ip->saddr.byte3 ,ip->saddr.byte2 ,ip->saddr.byte1);
         //sprintf(clientIP ,"%u.%u.%u.%u" ,ip->daddr.byte1,
         //    ip->daddr.byte2 ,ip->daddr.byte3 ,ip->daddr.byte4);
         memset(clientIP, 0, MAX_ADDR_LEN);
@@ -311,7 +315,52 @@ int FB(IPPacketInput input, ConnStateOutput& output, const char *app) {
                 }
                 else break;*/
 
-                if((size_t)strstr(serverIP, "31.13.") != (size_t)serverIP) break;
+                DNSHandler *handler = new DNSHandler();
+                QDnsLookup *reverse = new QDnsLookup(handler);
+                QSemaphore *semaphore = new QSemaphore();
+
+                handler->SetSemaphore(semaphore);
+
+                QObject::connect(reverse, &QDnsLookup::finished, handler, &DNSHandler::handleResult, Qt::BlockingQueuedConnection);
+                reverse->setType(QDnsLookup::PTR);
+                reverse->setName(QString(serverIPreverse));
+                reverse->lookup();
+
+                while(!semaphore->tryAcquire(1, 50)) {
+                    //Proto++;
+                    /*delete semaphore;
+                    delete handler;
+                    break;*/
+                    if(!reverse->isFinished()) reverse->abort();
+                    break;
+                }
+
+                delete semaphore;
+
+                if(reverse->error() == QDnsLookup::NoError) {
+                    bool match = false;
+                    const auto records = reverse->serviceRecords();
+                    for (const QDnsServiceRecord &record : records) {
+                        if(strstr((record.name().toStdString().c_str()), app) == NULL) {
+                            match = true;
+                            break;
+                        }
+                    }
+
+                    if(!match) {
+                        delete handler;
+                        break;
+                    }
+                }
+                else {
+                    delete handler;
+                    break;
+                }
+
+                delete handler;
+
+
+                //if((size_t)strstr(serverIP, "31.13.") != (size_t)serverIP) break;
 
 
                 //checkconn
