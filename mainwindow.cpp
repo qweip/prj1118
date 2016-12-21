@@ -205,6 +205,7 @@ static void FindAllInterfaces(QListWidget *qlw, bool ipv6Address) {
         litem = qlw->item(count);
         litem->setFlags(litem->flags() | Qt::ItemIsUserCheckable);
         litem->setCheckState(Qt::Unchecked);
+        if(cur->description) litem->setToolTip(cur->description);
 
         count += 1;
         cur = cur->next;
