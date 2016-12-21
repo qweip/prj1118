@@ -96,7 +96,7 @@ void Updater::doWork() {
                         UISetText(subitem, 2, buf);
 
                         //subitem->setText(0, tr("Facebook"));
-                        UISetText(subitem, 0, "Facebook");
+                        //UISetText(subitem, 0, "Facebook");
                     }
                 }
 
