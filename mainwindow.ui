@@ -30,7 +30,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -384,14 +384,15 @@ p, li { white-space: pre-wrap; }
     <addaction name="action"/>
     <addaction name="actionQwdq"/>
    </widget>
-   <widget class="QMenu" name="menu02">
-    <property name="title">
-     <string>02</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
      <string>關於</string>
+    </property>
+    <addaction name="action_2"/>
+   </widget>
+   <widget class="QMenu" name="menu02">
+    <property name="title">
+     <string>02</string>
     </property>
    </widget>
    <addaction name="menu"/>
@@ -409,14 +410,9 @@ p, li { white-space: pre-wrap; }
    <addaction name="action12313"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="action01">
+  <action name="actionQwdq">
    <property name="text">
-    <string>01</string>
-   </property>
-  </action>
-  <action name="action">
-   <property name="text">
-    <string>01</string>
+    <string>qwdq</string>
    </property>
   </action>
   <action name="action12313">
@@ -424,9 +420,19 @@ p, li { white-space: pre-wrap; }
     <string>12313</string>
    </property>
   </action>
-  <action name="actionQwdq">
+  <action name="action">
    <property name="text">
-    <string>qwdq</string>
+    <string>01</string>
+   </property>
+  </action>
+  <action name="action01">
+   <property name="text">
+    <string>01</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>關於</string>
    </property>
   </action>
  </widget>

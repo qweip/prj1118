@@ -253,3 +253,14 @@ void MainWindow::UIAddSubItem(QTreeWidgetItem *parent, QTreeWidgetItem **item) {
 void MainWindow::UISetText(QTreeWidgetItem* item, int col, const char *text) {
     if(item) item->setText(col, tr(text));
 }
+
+void MainWindow::on_action_2_triggered()
+{
+    QMessageBox msg;
+    msg.setText(
+        "國立金門大學 105學年上學期\n"
+        "資工系專題第3組 網路流量分析研究\n"
+        "即時分析DEMO程式\n"
+        );
+    msg.exec();
+}

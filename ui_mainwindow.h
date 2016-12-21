@@ -36,10 +36,11 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
-    QAction *action01;
-    QAction *action;
-    QAction *action12313;
     QAction *actionQwdq;
+    QAction *action12313;
+    QAction *action;
+    QAction *action01;
+    QAction *action_2;
     QWidget *centralWidget;
     QGridLayout *gridLayout_3;
     QTabWidget *tabWidget;
@@ -66,8 +67,8 @@ public:
     QTreeWidget *treeWidget;
     QMenuBar *menuBar;
     QMenu *menu;
-    QMenu *menu02;
     QMenu *menu_2;
+    QMenu *menu02;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -76,14 +77,16 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(692, 423);
-        action01 = new QAction(MainWindow);
-        action01->setObjectName(QStringLiteral("action01"));
-        action = new QAction(MainWindow);
-        action->setObjectName(QStringLiteral("action"));
-        action12313 = new QAction(MainWindow);
-        action12313->setObjectName(QStringLiteral("action12313"));
         actionQwdq = new QAction(MainWindow);
         actionQwdq->setObjectName(QStringLiteral("actionQwdq"));
+        action12313 = new QAction(MainWindow);
+        action12313->setObjectName(QStringLiteral("action12313"));
+        action = new QAction(MainWindow);
+        action->setObjectName(QStringLiteral("action"));
+        action01 = new QAction(MainWindow);
+        action01->setObjectName(QStringLiteral("action01"));
+        action_2 = new QAction(MainWindow);
+        action_2->setObjectName(QStringLiteral("action_2"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout_3 = new QGridLayout(centralWidget);
@@ -204,10 +207,10 @@ public:
         menu = new QMenu(menuBar);
         menu->setObjectName(QStringLiteral("menu"));
         menu->setTearOffEnabled(false);
-        menu02 = new QMenu(menuBar);
-        menu02->setObjectName(QStringLiteral("menu02"));
         menu_2 = new QMenu(menuBar);
         menu_2->setObjectName(QStringLiteral("menu_2"));
+        menu02 = new QMenu(menuBar);
+        menu02->setObjectName(QStringLiteral("menu02"));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -221,12 +224,13 @@ public:
         menuBar->addAction(menu_2->menuAction());
         menu->addAction(action);
         menu->addAction(actionQwdq);
+        menu_2->addAction(action_2);
         mainToolBar->addAction(action01);
         mainToolBar->addAction(action12313);
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -235,10 +239,11 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
-        action01->setText(QApplication::translate("MainWindow", "01", 0));
-        action->setText(QApplication::translate("MainWindow", "01", 0));
-        action12313->setText(QApplication::translate("MainWindow", "12313", 0));
         actionQwdq->setText(QApplication::translate("MainWindow", "qwdq", 0));
+        action12313->setText(QApplication::translate("MainWindow", "12313", 0));
+        action->setText(QApplication::translate("MainWindow", "01", 0));
+        action01->setText(QApplication::translate("MainWindow", "01", 0));
+        action_2->setText(QApplication::translate("MainWindow", "\351\227\234\346\226\274", 0));
         textEdit->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -325,8 +330,8 @@ public:
         treeWidget->setSortingEnabled(__sortingEnabled);
 
         menu->setTitle(QApplication::translate("MainWindow", "\346\252\224\346\241\210", 0));
-        menu02->setTitle(QApplication::translate("MainWindow", "02", 0));
         menu_2->setTitle(QApplication::translate("MainWindow", "\351\227\234\346\226\274", 0));
+        menu02->setTitle(QApplication::translate("MainWindow", "02", 0));
     } // retranslateUi
 
 };
