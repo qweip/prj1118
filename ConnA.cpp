@@ -235,7 +235,7 @@ static int CScmp(const void *a, const void *b) {
 
     if(c->GetVer() > d->GetVer()) return 1;
     else if(c->GetVer() < d->GetVer()) return -1;
-    else if((r = memcmp(c->GetIP(), d->GetIP(), MAX_ADDR_LEN) != 0)) return r;
+    else if((r = memcmp(c->GetIP(), d->GetIP(), MAX_ADDR_LEN)) != 0) return r;
     else if(c->GetPort() > d->GetPort()) return 1;
     else if(c->GetPort() < d->GetPort()) return -1;
     else return 0;
@@ -325,12 +325,12 @@ void ConnStateOutput::GetIPBound(const char clientIP[], ushort ver, size_t &l, s
     key.SetIP(clientIP);
     start = end = index = ((size_t)item - (size_t)p) / sizeof(*item);
     while(start > 0) {
-        if(CScmpIP(p + start - 1, &key) == 0) start--;
+        if(CScmpIP(p + (start - 1), &key) == 0) start--;
         else break;
     }
 
     while(end < n - 1) {
-        if(CScmpIP(p + end + 1, &key) == 0) end++;
+        if(CScmpIP(p + (end + 1), &key) == 0) end++;
         else break;
     }
 
