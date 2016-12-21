@@ -64,7 +64,7 @@ static void addr2Str(struct sockaddr *addr, char *buf, size_t maxLength) {
     }
 }
 
-static void FindAllInterfaces(QListWidget *qlw, bool ipv6Address) {
+static void FindAllInterfaces(QListWidget *qlw, bool ipv6Address, bool ignoreNull) {
     char devName[MAX_DEV_NAME], addrStr[64], netmaskStr[64], buf[32], *interfaceInfo;
     QString *qs;
     const char *desc;
@@ -74,6 +74,8 @@ static void FindAllInterfaces(QListWidget *qlw, bool ipv6Address) {
     pcap_addr *pcur;
     uint count, i;
     sa_family_t targetFamilay = AF_INET;
+
+    bool skipInterface;
 
     if(head) pcap_freealldevs(head);
     if(pcap_findalldevs(&head, pcapErrBuf) != 0) {
@@ -92,6 +94,8 @@ static void FindAllInterfaces(QListWidget *qlw, bool ipv6Address) {
         sprintf(netmaskStr, "NULL");
         netmastLen = 4;
 
+        skipInterface = true;
+
         if(cur->addresses) {
             pcur = cur->addresses;
             while(pcur) {
@@ -104,6 +108,7 @@ static void FindAllInterfaces(QListWidget *qlw, bool ipv6Address) {
 
                     addr2Str(pcur->addr, addrStr, sizeof(addrStr) - 1);
                     addrLen = strlen(addrStr);
+                    skipInterface = false;
                 }
 
                 if(pcur->netmask) {
@@ -115,8 +120,11 @@ static void FindAllInterfaces(QListWidget *qlw, bool ipv6Address) {
                 pcur = pcur->next;
             }
         }
-        else {
+        else { }
 
+        if(skipInterface && ignoreNull) {
+            cur = cur->next;
+            continue;
         }
 
 #ifdef __linux__
@@ -181,7 +189,7 @@ static void FindAllInterfaces(QListWidget *qlw, bool ipv6Address) {
 
 void MainWindow::on_pushButton_4_clicked()
 {
-    FindAllInterfaces(ui->listWidget, ui->radioButton_3->isChecked());
+    FindAllInterfaces(ui->listWidget, ui->radioButton_3->isChecked(), ui->checkBox->isChecked());
 }
 
 void MainWindow::on_pushButton_3_clicked()

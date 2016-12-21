@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -61,6 +62,7 @@ public:
     QPushButton *pushButton_4;
     QRadioButton *radioButton_2;
     QRadioButton *radioButton_3;
+    QCheckBox *checkBox;
     QTreeWidget *treeWidget;
     QMenuBar *menuBar;
     QMenu *menu;
@@ -172,6 +174,10 @@ public:
         radioButton_3 = new QRadioButton(tab_3);
         radioButton_3->setObjectName(QStringLiteral("radioButton_3"));
         radioButton_3->setGeometry(QRect(60, 300, 51, 20));
+        checkBox = new QCheckBox(tab_3);
+        checkBox->setObjectName(QStringLiteral("checkBox"));
+        checkBox->setGeometry(QRect(110, 300, 161, 20));
+        checkBox->setChecked(true);
         tabWidget->addTab(tab_3, QString());
 
         gridLayout_3->addWidget(tabWidget, 1, 0, 2, 1);
@@ -267,6 +273,7 @@ public:
         pushButton_4->setText(QApplication::translate("MainWindow", "Search", 0));
         radioButton_2->setText(QApplication::translate("MainWindow", "IPv4", 0));
         radioButton_3->setText(QApplication::translate("MainWindow", "IPv6", 0));
+        checkBox->setText(QApplication::translate("MainWindow", "Exclude NULL address", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "Tab 3", 0));
         QTreeWidgetItem *___qtreewidgetitem1 = treeWidget->headerItem();
         ___qtreewidgetitem1->setText(3, QApplication::translate("MainWindow", "123", 0));
