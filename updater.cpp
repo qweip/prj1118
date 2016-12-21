@@ -53,12 +53,14 @@ void Updater::SetN(uint _n) {
 extern MainWindow *_w;
 void Updater::doWork() {
     char buf[64];
+    const char *ipstr;
     ConnStateOutput *o;
     IPPacketInput *pkts;
     QMutex *m;
     QTreeWidgetItem *item, *subitem, *portitem;
     time_t now;
     uint i, j, k, l, u;
+    ushort ver;
 
     connect(this, &Updater::UIClear, _w, &MainWindow::UIClear, Qt::BlockingQueuedConnection);
     connect(this, &Updater::UIAddTop, _w, &MainWindow::UIAddTop, Qt::BlockingQueuedConnection);
@@ -83,16 +85,17 @@ void Updater::doWork() {
 
                 if(FB(*pkts, *o, "facebook") > 0) {
                     while(o->nextIP(j)) {
-                        ConnState::IP2Str(buf, (*o)[j].GetIP(), (*o)[j].GetVer());
+                        ConnState::IP2Str(buf, (ipstr = (*o)[j].GetIP()), (ver = (*o)[j].GetVer()));
                         UIAddIP(buf, &subitem);
                         UIAddSubItem(item, &subitem);
                         UISetText(subitem, 1, buf);
 
-                        o->GetIPBound((*o)[j].GetIP(), (*o)[j].GetVer(), l, u);
+                        o->GetIPBound(ipstr, ver, l, u);
                         for(k = l; k <= u; k += 1) {
                             UIAddSubItem(subitem, &portitem);
                             sprintf(buf, "%hu", (*o)[k].GetPort());
                             UISetText(portitem, 2, buf);
+                            free((void*)ipstr);
                         }
                     }
                 }
