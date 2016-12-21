@@ -43,22 +43,102 @@ void MainWindow::on_pushButton_clicked()
     ShowNormalMsgBox("Button1 clicked");
 }
 
-static void FindAllInterfaces(QListWidget *qlw) {
-    char devName[MAX_DEV_NAME], addrStr[64], netmaskStr[64], buf[32], *_addr, *interfaceInfo;
-    const char *desc;
-    sockaddr_in addrIn;
+static void inet6_ntoa(struct in6_addr addr, char *buf, size_t maxLength) {
+    char tmp[8];
+
+    size_t curSize = 0, len;
+    uint i;
+
+    uint zeroStartMax = 8;
+    uint zeroCountMax = 0;
+    uint zeroStart = 8;
+    uint zeroCount = 0;
+
+    ushort v;
+
+    for(i = 0; i < 8; i += 1) {
+        v = (addr.__in6_u.__u6_addr8[i << 1] << 8) | (addr.__in6_u.__u6_addr8[(i << 1) + 1]);
+        if(!v) {
+            if(zeroStart + zeroCount == i) {
+                zeroCount += 1;
+            }
+            else {
+                zeroStart = i;
+                zeroCount = 1;
+            }
+
+            if(zeroCount > zeroCountMax) {
+                zeroStartMax = zeroStart;
+                zeroCountMax = zeroCount;
+            }
+        }
+        else zeroCount = 0;
+    }
+
+    memset(buf, 0, maxLength);
+    for(i = 0; i < 8; i += 1) {
+        if(i == zeroStartMax) {
+            if(zeroCountMax + i == 8) {
+                tmp[0] = ':'; tmp[1] = ':'; tmp[2] = '\0';
+                curSize += 2;
+            }
+            else {
+                tmp[0] = ':'; tmp[1] = '\0';
+                curSize += 1;
+            }
+            strncat(buf, tmp, maxLength - curSize);
+
+            i += zeroCountMax - 1;
+        }
+        else {
+            v = (addr.__in6_u.__u6_addr8[i << 1] << 8) | (addr.__in6_u.__u6_addr8[(i << 1) + 1]);
+            if(i == 0) len = sprintf(tmp, "%hx", v);
+            else len = sprintf(tmp, ":%hx", v);
+            strncat(buf, tmp, maxLength - curSize);
+            curSize += len;
+        }
+    }
+}
+
+static void addr2Str(struct sockaddr *addr, char *buf, size_t maxLength) {
+    char *tmp;
+
+    switch(addr->sa_family) {
+    case AF_INET:
+        sockaddr_in v4addr;
+        memcpy(&v4addr, addr, sizeof(v4addr));
+        tmp = inet_ntoa(v4addr.sin_addr);
+        strncpy(buf, tmp, maxLength);
+        break;
+    case AF_INET6:
+        sockaddr_in6 v6addr;
+        memcpy(&v6addr, addr, sizeof(v6addr));
+        inet6_ntoa(v6addr.sin6_addr, buf, maxLength);
+        break;
+    default:
+        buf[0] = '\0';
+        break;
+    }
+}
+
+static void FindAllInterfaces(QListWidget *qlw, bool ipv6Address) {
+    char devName[MAX_DEV_NAME], addrStr[64], netmaskStr[64], buf[32], *interfaceInfo;
     QString *qs;
+    const char *desc;
     QListWidgetItem *litem;
     size_t totalStrLen, descLen, addrLen, netmastLen;
     pcap_if_t *cur;
     pcap_addr *pcur;
     uint count, i;
+    sa_family_t targetFamilay = AF_INET;
 
     if(head) pcap_freealldevs(head);
     if(pcap_findalldevs(&head, pcapErrBuf) != 0) {
         ShowNormalMsgBox(pcapErrBuf);
         return;
     }
+
+    if(ipv6Address) targetFamilay = AF_INET6;
 
     qlw->clear();
     cur = head;
@@ -74,21 +154,18 @@ static void FindAllInterfaces(QListWidget *qlw) {
             while(pcur) {
 
                 if(pcur->addr) {
-                    if(pcur->addr->sa_family != AF_INET) {
+                    if(pcur->addr->sa_family != targetFamilay) {
                         pcur = pcur->next;
                         continue;
                     }
 
-                    memcpy(&addrIn, pcur->addr, sizeof(addrIn));
-                    _addr = inet_ntoa(addrIn.sin_addr);
-                    strncpy(addrStr, _addr, sizeof(addrStr) - 1);
+                    addr2Str(pcur->addr, addrStr, sizeof(addrStr) - 1);
                     addrLen = strlen(addrStr);
                 }
 
                 if(pcur->netmask) {
-                    memcpy(&addrIn, pcur->netmask, sizeof(addrIn));
-                    _addr = inet_ntoa(addrIn.sin_addr);
-                    strncpy(netmaskStr, _addr, sizeof(netmaskStr) - 1);
+                    addr2Str(pcur->netmask, netmaskStr, sizeof(netmaskStr) - 1);
+                    netmastLen = strlen(netmaskStr);
                     netmastLen = strlen(netmaskStr);
                 }
 
@@ -160,7 +237,7 @@ static void FindAllInterfaces(QListWidget *qlw) {
 
 void MainWindow::on_pushButton_4_clicked()
 {
-    FindAllInterfaces(ui->listWidget);
+    FindAllInterfaces(ui->listWidget, ui->radioButton_3->isChecked());
 }
 
 void MainWindow::on_pushButton_3_clicked()
