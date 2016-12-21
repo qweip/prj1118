@@ -12,6 +12,12 @@
 #include <arpa/inet.h>
 #endif
 
+#ifdef __MINGW32__
+#include <winsock.h>
+#include <ws2tcpip.h>
+#endif
+
+
 /*
 
 */
@@ -405,7 +411,11 @@ void inet6_ntoa(struct in6_addr addr, char *buf, size_t maxLength) {
     ushort v;
 
     for(i = 0; i < 8; i += 1) {
+#ifdef __MINGW32_MAJOR_VERSION
+        v = (addr.u.Byte[i << 1] << 8) | (addr.u.Byte[(i << 1) + 1]);
+#else
         v = (addr.__in6_u.__u6_addr8[i << 1] << 8) | (addr.__in6_u.__u6_addr8[(i << 1) + 1]);
+#endif
         if(!v) {
             if(zeroStart + zeroCount == i) {
                 zeroCount += 1;
@@ -439,7 +449,11 @@ void inet6_ntoa(struct in6_addr addr, char *buf, size_t maxLength) {
             i += zeroCountMax - 1;
         }
         else {
+#ifdef __MINGW32_MAJOR_VERSION
+            v = (addr.u.Byte[i << 1] << 8) | (addr.u.Byte[(i << 1) + 1]);
+#else
             v = (addr.__in6_u.__u6_addr8[i << 1] << 8) | (addr.__in6_u.__u6_addr8[(i << 1) + 1]);
+#endif
             if(i == 0) len = sprintf(tmp, "%hx", v);
             else len = sprintf(tmp, ":%hx", v);
             strncat(buf, tmp, maxLength - curSize);

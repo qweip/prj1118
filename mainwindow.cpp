@@ -5,6 +5,11 @@
 #include "interface_thread.hpp"
 #include "updater.hpp"
 
+#ifdef __MINGW32__
+#include <winsock.h>
+#include <ws2tcpip.h>
+#endif
+
 #define MAX_DEV_NAME 256
 
 char pcapErrBuf[PCAP_ERRBUF_SIZE];
@@ -64,6 +69,7 @@ static void addr2Str(struct sockaddr *addr, char *buf, size_t maxLength) {
     }
 }
 
+typedef u_short sa_family_t;
 static void FindAllInterfaces(QListWidget *qlw, bool ipv6Address, bool ignoreNull) {
     char devName[MAX_DEV_NAME], addrStr[64], netmaskStr[64], buf[32], *interfaceInfo;
     QString *qs;
@@ -176,6 +182,33 @@ static void FindAllInterfaces(QListWidget *qlw, bool ipv6Address, bool ignoreNul
 
     cur = head;
     for(i = 0; i < count; i += 1, cur = cur->next) {
+        if(ignoreNull) {
+            if(cur->addresses) {
+                bool skip = true;
+                pcur = cur->addresses;
+                while(pcur) {
+                    if(pcur->addr) {
+                        if(pcur->addr->sa_family != targetFamilay) {
+                            pcur = pcur->next;
+                            continue;
+                        }
+                        skip = false;
+                        break;
+                    }
+                    else break;
+                    pcur = pcur->next;
+                }
+                if(skip) {
+                    i--;
+                    continue;
+                }
+            }
+            else {
+                i--;
+                continue;
+            }
+        }
+
         strncpy(devName, cur->name, sizeof(devName) - 1);
 
         devNames[i] = new char[(totalStrLen = strlen(devName)) + 1];
