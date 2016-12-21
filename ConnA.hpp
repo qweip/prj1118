@@ -67,6 +67,7 @@ class ConnState{
         char ip[MAX_ADDR_LEN];//save dstip(Client IP)
         ushort dport;//host dport
         uint32_t state; //0?(No connected) 1?(connected) 2?(useing the app)
+        uint32_t nConBig;
 
     public:
         ConnState();
@@ -76,11 +77,13 @@ class ConnState{
         void SetIP(char _ip[]);
         void SetState(uint32_t _state);
         void SetPort(uint32_t _dport);
+        void SetnConBig(uint32_t _nConBig);
 
         ushort GetVer() const;
         const char *GetIP() const;
         ushort GetPort() const;
         uint32_t GetState() const;
+        uint32_t GetnConBig() const;
 
         static void IP2Str(char *buf, const char *ip, ushort version);
 };
@@ -96,6 +99,7 @@ class ConnStateOutput{
         ~ConnStateOutput();
         void add(const ConnState &output); //插入輸出結果
         uint32_t checkConn(char clientIP[], uint32_t clientPort, ushort ver);
+        ConnState* find(char clientIP[], uint32_t clientPort, ushort ver);
         const ConnState& operator[](uint32_t index) const;
         unsigned int N() const; //取得目前的物件總數
 };

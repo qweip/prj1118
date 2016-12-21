@@ -254,7 +254,7 @@ void MainWindow::UISetText(QTreeWidgetItem* item, int col, const char *text) {
     if(item) item->setText(col, tr(text));
 }
 
-void MainWindow::on_action_2_triggered()
+void MainWindow::on_action_triggered()
 {
     QMessageBox msg;
     msg.setText(

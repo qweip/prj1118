@@ -158,6 +158,10 @@ uint32_t ConnState::GetState() const{
     return state;
 }
 
+uint32_t ConnState::GetnConBig() const{
+    return nConBig;
+}
+
 void ConnState::IP2Str(char *buf, const char *ip, ushort version) {
     switch(version) {
     case 4:
@@ -203,6 +207,10 @@ void ConnState::SetState(uint32_t _state){
     state = _state;
 }
 
+void ConnState::SetnConBig(uint32_t _nConBig){
+    nConBig = _nConBig;
+}
+
 void ConnState::SetMember(ushort _ver,char _ip[],uint32_t _state){
     version=_ver;
     memcpy(ip,_ip,MAX_ADDR_LEN);
@@ -244,6 +252,10 @@ void ConnStateOutput::add(const ConnState &output)
 }
 
 uint32_t ConnStateOutput::checkConn(char clientIP[], uint32_t clientPort, ushort ver){
+    return (find(clientIP, clientPort, ver) ? 1 : 0);
+}
+
+ ConnState * ConnStateOutput::find(char clientIP[], uint32_t clientPort, ushort ver){
     ConnState *res;
     ConnState key;
 
@@ -251,8 +263,8 @@ uint32_t ConnStateOutput::checkConn(char clientIP[], uint32_t clientPort, ushort
     key.SetIP(clientIP);
     key.SetPort(clientPort);
     res = (ConnState*)bsearch(&key,p, n, sizeof(*p), CScmp);
-    if(res) return 1;
-    else return 0;
+
+    return res;
 }
 
 const ConnState& ConnStateOutput::operator[](uint32_t index) const {
@@ -318,26 +330,32 @@ int FB(IPPacketInput input, ConnStateOutput& output, const char *app) {
 
 
                 //checkconn
-                if(output.checkConn(clientIP,clientPort,ver))break;
+                ConnState *res;
+                if((res = output.find(clientIP,clientPort,ver))) {
+                    state = *res;
+                    if(totalLength<700)state.SetnConBig(0);
+                    else if(totalLength >= 700){
+
+                        state.SetnConBig(state.GetnConBig() + 1);
+                        if(state.GetnConBig()>=10)state.SetnConBig(2);
+                    }
+
+                    break;
+                }
 
 
                 //state 簡單處理...
-
-
                 if(totalLength >= 700) {
-                    nConBig += 1;
+                    state.SetnConBig(1);
                 }
                 else {
-                    nConBig = 0;
+                    state.SetnConBig(0);
                 }
 
-                if (nConBig >= 10) {
-                    state.SetState(2);
-                    ts[2] += 1;
-                }
                 if(input[index].GetSec() - lastSeen) {
                     if (nConBig <= 5) {
                         //background
+                        state.SetnConBig(1);
                         state.SetState(1);
                         ts[1] += 1;
                     }
