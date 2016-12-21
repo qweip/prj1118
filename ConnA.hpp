@@ -101,5 +101,6 @@ class ConnStateOutput{
 };
 
 int FB(IPPacketInput input, ConnStateOutput& output, const char* app);
+void inet6_ntoa(struct in6_addr addr, char *buf, size_t maxLength);
 #endif
 

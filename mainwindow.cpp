@@ -43,63 +43,6 @@ void MainWindow::on_pushButton_clicked()
     ShowNormalMsgBox("Button1 clicked");
 }
 
-static void inet6_ntoa(struct in6_addr addr, char *buf, size_t maxLength) {
-    char tmp[8];
-
-    size_t curSize = 0, len;
-    uint i;
-
-    uint zeroStartMax = 8;
-    uint zeroCountMax = 0;
-    uint zeroStart = 8;
-    uint zeroCount = 0;
-
-    ushort v;
-
-    for(i = 0; i < 8; i += 1) {
-        v = (addr.__in6_u.__u6_addr8[i << 1] << 8) | (addr.__in6_u.__u6_addr8[(i << 1) + 1]);
-        if(!v) {
-            if(zeroStart + zeroCount == i) {
-                zeroCount += 1;
-            }
-            else {
-                zeroStart = i;
-                zeroCount = 1;
-            }
-
-            if(zeroCount > zeroCountMax) {
-                zeroStartMax = zeroStart;
-                zeroCountMax = zeroCount;
-            }
-        }
-        else zeroCount = 0;
-    }
-
-    memset(buf, 0, maxLength);
-    for(i = 0; i < 8; i += 1) {
-        if(i == zeroStartMax) {
-            if(zeroCountMax + i == 8) {
-                tmp[0] = ':'; tmp[1] = ':'; tmp[2] = '\0';
-                curSize += 2;
-            }
-            else {
-                tmp[0] = ':'; tmp[1] = '\0';
-                curSize += 1;
-            }
-            strncat(buf, tmp, maxLength - curSize);
-
-            i += zeroCountMax - 1;
-        }
-        else {
-            v = (addr.__in6_u.__u6_addr8[i << 1] << 8) | (addr.__in6_u.__u6_addr8[(i << 1) + 1]);
-            if(i == 0) len = sprintf(tmp, "%hx", v);
-            else len = sprintf(tmp, ":%hx", v);
-            strncat(buf, tmp, maxLength - curSize);
-            curSize += len;
-        }
-    }
-}
-
 static void addr2Str(struct sockaddr *addr, char *buf, size_t maxLength) {
     char *tmp;
 
