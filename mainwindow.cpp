@@ -64,20 +64,21 @@ static void FindAllInterfaces(QListWidget *qlw) {
     cur = head;
     count = 0;
     while(cur) {
-        if(cur->addresses) {
-            sprintf(addrStr, "NULL");
-            addrLen = 4;
-            sprintf(netmaskStr, "NULL");
-            netmastLen = 4;
+        sprintf(addrStr, "NULL");
+        addrLen = 4;
+        sprintf(netmaskStr, "NULL");
+        netmastLen = 4;
 
+        if(cur->addresses) {
             pcur = cur->addresses;
             while(pcur) {
-                if(pcur->addr->sa_family != AF_INET) {
-                    pcur = pcur->next;
-                    continue;
-                }
 
                 if(pcur->addr) {
+                    if(pcur->addr->sa_family != AF_INET) {
+                        pcur = pcur->next;
+                        continue;
+                    }
+
                     memcpy(&addrIn, pcur->addr, sizeof(addrIn));
                     _addr = inet_ntoa(addrIn.sin_addr);
                     strncpy(addrStr, _addr, sizeof(addrStr) - 1);
@@ -95,10 +96,7 @@ static void FindAllInterfaces(QListWidget *qlw) {
             }
         }
         else {
-            sprintf(addrStr, "NULL");
-            addrLen = 4;
-            sprintf(netmaskStr, "NULL");
-            netmastLen = 4;
+
         }
 
 #ifdef __linux__
