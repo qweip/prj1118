@@ -45,11 +45,13 @@ void MainWindow::on_pushButton_clicked()
 
 static void FindAllInterfaces(QListWidget *qlw) {
     char devName[MAX_DEV_NAME], addrStr[64], netmaskStr[64], buf[32], *_addr, *interfaceInfo;
+    const char *desc;
     sockaddr_in addrIn;
     QString *qs;
     QListWidgetItem *litem;
-    size_t totalStrLen;
+    size_t totalStrLen, descLen, addrLen, netmastLen;
     pcap_if_t *cur;
+    pcap_addr *pcur;
     uint count, i;
 
     if(head) pcap_freealldevs(head);
@@ -62,17 +64,63 @@ static void FindAllInterfaces(QListWidget *qlw) {
     cur = head;
     count = 0;
     while(cur) {
-        memcpy(&addrIn, cur->addresses->addr, sizeof(addrIn));
-        _addr = inet_ntoa(addrIn.sin_addr);
-        strncpy(addrStr, _addr, sizeof(addrStr) - 1);
+        if(cur->addresses) {
+            sprintf(addrStr, "NULL");
+            addrLen = 4;
+            sprintf(netmaskStr, "NULL");
+            netmastLen = 4;
 
-        memcpy(&addrIn, cur->addresses->netmask, sizeof(addrIn));
-        _addr = inet_ntoa(addrIn.sin_addr);
-        strncpy(netmaskStr, _addr, sizeof(netmaskStr) - 1);
+            pcur = cur->addresses;
+            while(pcur) {
+                if(pcur->addr->sa_family != AF_INET) {
+                    pcur = pcur->next;
+                    continue;
+                }
 
-        totalStrLen = strlen(cur->description) + strlen(addrStr) + strlen(netmaskStr);
+                if(pcur->addr) {
+                    memcpy(&addrIn, pcur->addr, sizeof(addrIn));
+                    _addr = inet_ntoa(addrIn.sin_addr);
+                    strncpy(addrStr, _addr, sizeof(addrStr) - 1);
+                    addrLen = strlen(addrStr);
+                }
+
+                if(pcur->netmask) {
+                    memcpy(&addrIn, pcur->netmask, sizeof(addrIn));
+                    _addr = inet_ntoa(addrIn.sin_addr);
+                    strncpy(netmaskStr, _addr, sizeof(netmaskStr) - 1);
+                    netmastLen = strlen(netmaskStr);
+                }
+
+                pcur = pcur->next;
+            }
+        }
+        else {
+            sprintf(addrStr, "NULL");
+            addrLen = 4;
+            sprintf(netmaskStr, "NULL");
+            netmastLen = 4;
+        }
+
+#ifdef __linux__
+        if(cur->name) {
+            desc = cur->name;
+            descLen = strlen(cur->name);
+        }
+#else
+        if(cur->description) {
+            desc = cur->description;
+            descLen = strlen(cur->description);
+        }
+#endif //ifdef __linux__
+        else {
+            desc = "NULL";
+            descLen = 4;
+        }
+
+
+        totalStrLen = descLen + addrLen + netmastLen;
         interfaceInfo = new char[totalStrLen + 1 + 4];
-        sprintf(interfaceInfo, "%s (%s/%s)", cur->description, addrStr, netmaskStr);
+        sprintf(interfaceInfo, "%s (%s/%s)", desc, addrStr, netmaskStr);
         qs = new QString(interfaceInfo);
 
         qlw->addItem(*qs);
