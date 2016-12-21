@@ -35,10 +35,6 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
-    QAction *action01;
-    QAction *action;
-    QAction *action12313;
-    QAction *actionQwdq;
     QWidget *centralWidget;
     QGridLayout *gridLayout_3;
     QTabWidget *tabWidget;
@@ -72,14 +68,6 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(692, 423);
-        action01 = new QAction(MainWindow);
-        action01->setObjectName(QStringLiteral("action01"));
-        action = new QAction(MainWindow);
-        action->setObjectName(QStringLiteral("action"));
-        action12313 = new QAction(MainWindow);
-        action12313->setObjectName(QStringLiteral("action12313"));
-        actionQwdq = new QAction(MainWindow);
-        actionQwdq->setObjectName(QStringLiteral("actionQwdq"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout_3 = new QGridLayout(centralWidget);
@@ -168,16 +156,6 @@ public:
         gridLayout_3->addWidget(tabWidget, 1, 0, 2, 1);
 
         treeWidget = new QTreeWidget(centralWidget);
-        QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem(treeWidget);
-        __qtreewidgetitem->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEditable|Qt::ItemIsDragEnabled|Qt::ItemIsDropEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsTristate);
-        QTreeWidgetItem *__qtreewidgetitem1 = new QTreeWidgetItem(__qtreewidgetitem);
-        new QTreeWidgetItem(__qtreewidgetitem1);
-        new QTreeWidgetItem(__qtreewidgetitem1);
-        QTreeWidgetItem *__qtreewidgetitem2 = new QTreeWidgetItem(__qtreewidgetitem);
-        new QTreeWidgetItem(__qtreewidgetitem2);
-        new QTreeWidgetItem(__qtreewidgetitem2);
-        QTreeWidgetItem *__qtreewidgetitem3 = new QTreeWidgetItem(treeWidget);
-        new QTreeWidgetItem(__qtreewidgetitem3);
         treeWidget->setObjectName(QStringLiteral("treeWidget"));
 
         gridLayout_3->addWidget(treeWidget, 2, 1, 1, 1);
@@ -204,14 +182,10 @@ public:
         menuBar->addAction(menu->menuAction());
         menuBar->addAction(menu02->menuAction());
         menuBar->addAction(menu_2->menuAction());
-        menu->addAction(action);
-        menu->addAction(actionQwdq);
-        mainToolBar->addAction(action01);
-        mainToolBar->addAction(action12313);
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -219,95 +193,41 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
-        action01->setText(QApplication::translate("MainWindow", "01", 0));
-        action->setText(QApplication::translate("MainWindow", "01", 0));
-        action12313->setText(QApplication::translate("MainWindow", "12313", 0));
-        actionQwdq->setText(QApplication::translate("MainWindow", "qwdq", 0));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "\344\270\273\347\250\213\345\274\217", 0));
         textEdit->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'PMingLiU'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">e wfewfwefwefwefwefefeeeweww</p></body></html>", 0));
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", 0));
         textEdit_2->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'PMingLiU'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">1234568798</p></body></html>", 0));
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", 0));
         pushButton_2->setText(QApplication::translate("MainWindow", "PushButton", 0));
         textEdit_3->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'PMingLiU'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">1234568798</p></body></html>", 0));
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", 0));
         radioButton->setText(QApplication::translate("MainWindow", "RadioButton", 0));
         pushButton->setText(QApplication::translate("MainWindow", "PushButton", 0));
         textBrowser->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'PMingLiU'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">123456789</p></body></html>", 0));
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", 0));
         label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "Tab 1", 0));
+        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "\346\226\275\345\267\245\344\270\255", 0));
         QTreeWidgetItem *___qtreewidgetitem = treeWidget_2->headerItem();
         ___qtreewidgetitem->setText(2, QApplication::translate("MainWindow", "Port", 0));
         ___qtreewidgetitem->setText(1, QApplication::translate("MainWindow", "IP", 0));
         ___qtreewidgetitem->setText(0, QApplication::translate("MainWindow", "\346\234\215\345\213\231", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Tab 2", 0));
+        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "\345\215\263\346\231\202\347\213\200\346\205\213", 0));
         pushButton_3->setText(QApplication::translate("MainWindow", "Apply", 0));
         pushButton_4->setText(QApplication::translate("MainWindow", "Search", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "Tab 3", 0));
-        QTreeWidgetItem *___qtreewidgetitem1 = treeWidget->headerItem();
-        ___qtreewidgetitem1->setText(3, QApplication::translate("MainWindow", "123", 0));
-        ___qtreewidgetitem1->setText(2, QApplication::translate("MainWindow", "123", 0));
-        ___qtreewidgetitem1->setText(1, QApplication::translate("MainWindow", "\346\226\260\345\242\236\346\254\204\344\275\215", 0));
-        ___qtreewidgetitem1->setText(0, QApplication::translate("MainWindow", "133333", 0));
-
-        const bool __sortingEnabled = treeWidget->isSortingEnabled();
-        treeWidget->setSortingEnabled(false);
-        QTreeWidgetItem *___qtreewidgetitem2 = treeWidget->topLevelItem(0);
-        ___qtreewidgetitem2->setText(3, QApplication::translate("MainWindow", "12312", 0));
-        ___qtreewidgetitem2->setText(2, QApplication::translate("MainWindow", "123123", 0));
-        ___qtreewidgetitem2->setText(1, QApplication::translate("MainWindow", "12321", 0));
-        ___qtreewidgetitem2->setText(0, QApplication::translate("MainWindow", "\346\226\260\345\242\236\351\240\205\347\233\256", 0));
-        QTreeWidgetItem *___qtreewidgetitem3 = ___qtreewidgetitem2->child(0);
-        ___qtreewidgetitem3->setText(3, QApplication::translate("MainWindow", "2132", 0));
-        ___qtreewidgetitem3->setText(2, QApplication::translate("MainWindow", "213213", 0));
-        ___qtreewidgetitem3->setText(1, QApplication::translate("MainWindow", "2133", 0));
-        ___qtreewidgetitem3->setText(0, QApplication::translate("MainWindow", "12321", 0));
-        QTreeWidgetItem *___qtreewidgetitem4 = ___qtreewidgetitem3->child(0);
-        ___qtreewidgetitem4->setText(3, QApplication::translate("MainWindow", "213123", 0));
-        ___qtreewidgetitem4->setText(2, QApplication::translate("MainWindow", "213", 0));
-        ___qtreewidgetitem4->setText(1, QApplication::translate("MainWindow", "21332", 0));
-        ___qtreewidgetitem4->setText(0, QApplication::translate("MainWindow", "123122222", 0));
-        QTreeWidgetItem *___qtreewidgetitem5 = ___qtreewidgetitem3->child(1);
-        ___qtreewidgetitem5->setText(3, QApplication::translate("MainWindow", "2132", 0));
-        ___qtreewidgetitem5->setText(2, QApplication::translate("MainWindow", "21321", 0));
-        ___qtreewidgetitem5->setText(1, QApplication::translate("MainWindow", "21323", 0));
-        ___qtreewidgetitem5->setText(0, QApplication::translate("MainWindow", "1232121321", 0));
-        QTreeWidgetItem *___qtreewidgetitem6 = ___qtreewidgetitem2->child(1);
-        ___qtreewidgetitem6->setText(3, QApplication::translate("MainWindow", "213", 0));
-        ___qtreewidgetitem6->setText(2, QApplication::translate("MainWindow", "213213", 0));
-        ___qtreewidgetitem6->setText(1, QApplication::translate("MainWindow", "12312", 0));
-        ___qtreewidgetitem6->setText(0, QApplication::translate("MainWindow", "123", 0));
-        QTreeWidgetItem *___qtreewidgetitem7 = ___qtreewidgetitem6->child(0);
-        ___qtreewidgetitem7->setText(3, QApplication::translate("MainWindow", "123123", 0));
-        ___qtreewidgetitem7->setText(2, QApplication::translate("MainWindow", "2132", 0));
-        ___qtreewidgetitem7->setText(1, QApplication::translate("MainWindow", "1231231", 0));
-        ___qtreewidgetitem7->setText(0, QApplication::translate("MainWindow", "2131232321", 0));
-        QTreeWidgetItem *___qtreewidgetitem8 = ___qtreewidgetitem6->child(1);
-        ___qtreewidgetitem8->setText(3, QApplication::translate("MainWindow", "21323", 0));
-        ___qtreewidgetitem8->setText(2, QApplication::translate("MainWindow", "213", 0));
-        ___qtreewidgetitem8->setText(1, QApplication::translate("MainWindow", "213213", 0));
-        ___qtreewidgetitem8->setText(0, QApplication::translate("MainWindow", "12321321", 0));
-        QTreeWidgetItem *___qtreewidgetitem9 = treeWidget->topLevelItem(1);
-        ___qtreewidgetitem9->setText(0, QApplication::translate("MainWindow", "21321231231", 0));
-        QTreeWidgetItem *___qtreewidgetitem10 = ___qtreewidgetitem9->child(0);
-        ___qtreewidgetitem10->setText(0, QApplication::translate("MainWindow", "\346\226\260\345\242\236\345\255\220\351\240\205\347\233\256", 0));
-        treeWidget->setSortingEnabled(__sortingEnabled);
-
+        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "\351\201\270\346\223\207\344\273\213\351\235\242", 0));
         menu->setTitle(QApplication::translate("MainWindow", "\346\252\224\346\241\210", 0));
-        menu02->setTitle(QApplication::translate("MainWindow", "02", 0));
         menu_2->setTitle(QApplication::translate("MainWindow", "\351\227\234\346\226\274", 0));
     } // retranslateUi
 
