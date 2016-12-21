@@ -74,7 +74,7 @@ class ConnState{
 
         void SetMember(ushort _ver,char _ip[],uint32_t _state);
         void SetVer(uint32_t _ver);
-        void SetIP(char _ip[]);
+        void SetIP(const char _ip[]);
         void SetState(uint32_t _state);
         void SetPort(uint32_t _dport);
         void SetnConBig(uint32_t _nConBig);
@@ -93,15 +93,25 @@ class ConnStateOutput{
     private:
         ConnState *p;
         unsigned int n;
+        unsigned int i;
 
     public:
         ConnStateOutput();
         ~ConnStateOutput();
+
         void add(const ConnState &output); //插入輸出結果
         uint32_t checkConn(char clientIP[], uint32_t clientPort, ushort ver);
-        ConnState* find(char clientIP[], uint32_t clientPort, ushort ver);
+        ConnState* find(char clientIP[], uint32_t clientPort, ushort ver) const;
+
         const ConnState& operator[](uint32_t index) const;
         unsigned int N() const; //取得目前的物件總數
+
+        ConnState* findIP(const char clientIP[], ushort ver) const;
+        void GetIPConnState(const char clientIP[], ushort ver, ConnStateOutput *sub) const;
+        void GetIPBound(const char clientIP[], ushort ver, size_t &l, size_t &u) const; //inclusive
+
+        void ResetIndex();
+        bool nextIP(size_t &ret);
 };
 
 int FB(IPPacketInput input, ConnStateOutput& output, const char* app);

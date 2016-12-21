@@ -56,12 +56,13 @@ void Updater::doWork() {
     ConnStateOutput *o;
     IPPacketInput *pkts;
     QMutex *m;
-    QTreeWidgetItem *item, *subitem;
+    QTreeWidgetItem *item, *subitem, *portitem;
     time_t now;
-    uint i, j, k;
+    uint i, j, k, l, u;
 
     connect(this, &Updater::UIClear, _w, &MainWindow::UIClear, Qt::BlockingQueuedConnection);
     connect(this, &Updater::UIAddTop, _w, &MainWindow::UIAddTop, Qt::BlockingQueuedConnection);
+    connect(this, &Updater::UIAddIP, _w, &MainWindow::UIAddIP, Qt::BlockingQueuedConnection);
     connect(this, &Updater::UIAddSubItem, _w, &MainWindow::UIAddSubItem, Qt::BlockingQueuedConnection);
     connect(this, &Updater::UISetText, _w, &MainWindow::UISetText, Qt::BlockingQueuedConnection);
 
@@ -81,22 +82,18 @@ void Updater::doWork() {
                 o = new ConnStateOutput();
 
                 if(FB(*pkts, *o, "facebook") > 0) {
-                    k = o->N();
-                    for(j = 0; j < k; j += 1) {
+                    while(o->nextIP(j)) {
                         ConnState::IP2Str(buf, (*o)[j].GetIP(), (*o)[j].GetVer());
-
-                        //subitem = new QTreeWidgetItem(item);
+                        UIAddIP(buf, &subitem);
                         UIAddSubItem(item, &subitem);
-
-                        //subitem->setText(1, tr(buf));
                         UISetText(subitem, 1, buf);
 
-                        sprintf(buf, "%hu", (*o)[j].GetPort());
-                        //subitem->setText(2, tr(buf));
-                        UISetText(subitem, 2, buf);
-
-                        //subitem->setText(0, tr("Facebook"));
-                        //UISetText(subitem, 0, "Facebook");
+                        o->GetIPBound((*o)[j].GetIP(), (*o)[j].GetVer(), l, u);
+                        for(k = l; k <= u; k += 1) {
+                            UIAddSubItem(subitem, &portitem);
+                            sprintf(buf, "%hu", (*o)[k].GetPort());
+                            UISetText(portitem, 2, buf);
+                        }
                     }
                 }
 

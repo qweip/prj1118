@@ -26,6 +26,7 @@ signals:
 signals:
     void UIClear();
     void UIAddTop(const char *text, QTreeWidgetItem **item);
+    void UIAddIP(const char *text, QTreeWidgetItem **item);
     void UIAddSubItem(QTreeWidgetItem *parent, QTreeWidgetItem **item);
     void UISetText(QTreeWidgetItem* item, int col, const char *text);
 };

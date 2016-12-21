@@ -269,6 +269,7 @@ void MainWindow::on_pushButton_3_clicked()
 
 void MainWindow::UIClear() {
     ui->treeWidget_2->clear();
+    ui->treeWidget->clear();
 }
 
 void MainWindow::UIAddTop(const char *text, QTreeWidgetItem **item) {
@@ -279,8 +280,16 @@ void MainWindow::UIAddTop(const char *text, QTreeWidgetItem **item) {
     *item = _item;
 }
 
+void MainWindow::UIAddIP(const char *text, QTreeWidgetItem **item) {
+    QTreeWidgetItem *_item;
+    _item = new QTreeWidgetItem(ui->treeWidget);
+    _item->setText(0, tr(text));
+    *item = _item;
+}
+
 void MainWindow::UIAddSubItem(QTreeWidgetItem *parent, QTreeWidgetItem **item) {
     *item = new QTreeWidgetItem(parent);
+    (*item)->setExpanded(true);
 }
 
 void MainWindow::UISetText(QTreeWidgetItem* item, int col, const char *text) {

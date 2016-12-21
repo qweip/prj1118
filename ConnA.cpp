@@ -200,7 +200,7 @@ void ConnState::SetVer(uint32_t _ver){
     version =_ver;
 }
 
-void ConnState::SetIP(char _ip[]){
+void ConnState::SetIP(const char _ip[]){
     memcpy(ip,_ip,MAX_ADDR_LEN);
 }
 
@@ -225,7 +225,7 @@ void ConnState::SetMember(ushort _ver,char _ip[],uint32_t _state){
 
 ConnStateOutput::ConnStateOutput() {
     p = (ConnState*)malloc(0);
-    n = 0;
+    i = n = 0;
 }
 
 static int CScmp(const void *a, const void *b) {
@@ -239,6 +239,15 @@ static int CScmp(const void *a, const void *b) {
     else if(c->GetPort() > d->GetPort()) return 1;
     else if(c->GetPort() < d->GetPort()) return -1;
     else return 0;
+}
+
+static int CScmpIP(const void *a, const void *b) {
+    ConnState *c= (ConnState*)a;
+    ConnState *d= (ConnState*)b;
+
+    if(c->GetVer() > d->GetVer()) return 1;
+    else if(c->GetVer() < d->GetVer()) return -1;
+    else return memcmp(c->GetIP(), d->GetIP(), MAX_ADDR_LEN);
 }
 
 ConnStateOutput::~ConnStateOutput() {
@@ -261,7 +270,7 @@ uint32_t ConnStateOutput::checkConn(char clientIP[], uint32_t clientPort, ushort
     return (find(clientIP, clientPort, ver) ? 1 : 0);
 }
 
- ConnState * ConnStateOutput::find(char clientIP[], uint32_t clientPort, ushort ver){
+ ConnState * ConnStateOutput::find(char clientIP[], uint32_t clientPort, ushort ver) const{
     ConnState *res;
     ConnState key;
 
@@ -280,6 +289,68 @@ const ConnState& ConnStateOutput::operator[](uint32_t index) const {
 
 unsigned int ConnStateOutput::N() const {
     return n;
+}
+
+ConnState* ConnStateOutput::findIP(const char clientIP[], ushort ver) const {
+    ConnState *res;
+    ConnState key;
+
+    key.SetVer(ver);
+    key.SetIP(clientIP);
+    res = (ConnState*)bsearch(&key,p, n, sizeof(*p), CScmpIP);
+
+    return res;
+}
+
+void ConnStateOutput::GetIPConnState(const char clientIP[], ushort ver, ConnStateOutput *sub) const {
+    size_t start, end, i;
+    GetIPBound(clientIP, ver, start, end);
+
+    if(end < n)
+        for(i = start; i <= end; i += 1)
+            sub->add(p[i]);
+}
+
+void ConnStateOutput::GetIPBound(const char clientIP[], ushort ver, size_t &l, size_t &u) const {
+    ConnState key;
+    ConnState *item = findIP(clientIP, ver);
+    size_t index, start, end;
+
+    if(!item) {
+        l = u = n;
+        return;
+    }
+
+    key.SetVer(ver);
+    key.SetIP(clientIP);
+    start = end = index = ((size_t)item - (size_t)p) / sizeof(*item);
+    while(start > 0) {
+        if(CScmpIP(p + start - 1, &key) == 0) start--;
+        else break;
+    }
+
+    while(end < n - 1) {
+        if(CScmpIP(p + end + 1, &key) == 0) end++;
+        else break;
+    }
+
+    l = start;
+    u = end;
+}
+
+void ConnStateOutput::ResetIndex() {
+    i = 0;
+}
+
+bool ConnStateOutput::nextIP(size_t &ret) {
+    size_t start, end;
+    if(i < n) {
+        GetIPBound(p[i].GetIP(), p[i].GetVer(), start, end);
+        ret = start;
+        i = end + 1;
+        return true;
+    }
+    return false;
 }
 
 int FB(IPPacketInput input, ConnStateOutput& output, const char *app) {
