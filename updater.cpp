@@ -59,7 +59,8 @@ void Updater::doWork() {
     QMutex *m;
     QTreeWidgetItem *item, *subitem, *portitem;
     time_t now;
-    uint i, j, k, l, u;
+    uint i;
+    size_t j, k, l, u;
     ushort ver;
 
     connect(this, &Updater::UIClear, _w, &MainWindow::UIClear, Qt::BlockingQueuedConnection);
