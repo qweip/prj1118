@@ -41,3 +41,8 @@ unix:!macx {
 #------------libpcap---------------
   LIBS += -lpcap
 }
+
+macx {
+#------------libpcap---------------
+  LIBS += -lpcap
+}

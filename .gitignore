@@ -45,3 +45,6 @@ object_script.*
 
 #Program output (Linux)
 prj1118
+
+#MACX
+prj1118.app/
