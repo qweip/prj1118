@@ -287,9 +287,9 @@ void MainWindow::UIAddIP(const char *text, QTreeWidgetItem **item) {
     *item = _item;
 }
 
-void MainWindow::UIAddSubItem(QTreeWidgetItem *parent, QTreeWidgetItem **item) {
+void MainWindow::UIAddSubItem(QTreeWidgetItem *parent, QTreeWidgetItem **item, bool expend) {
     *item = new QTreeWidgetItem(parent);
-    (*item)->setExpanded(true);
+    (*item)->setExpanded(expend);
 }
 
 void MainWindow::UISetText(QTreeWidgetItem* item, int col, const char *text) {

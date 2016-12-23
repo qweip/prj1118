@@ -33,7 +33,7 @@ public slots:
     void UIClear();
     void UIAddTop(const char *text, QTreeWidgetItem **item);
     void UIAddIP(const char *text, QTreeWidgetItem **item);
-    void UIAddSubItem(QTreeWidgetItem *parent, QTreeWidgetItem **item);
+    void UIAddSubItem(QTreeWidgetItem *parent, QTreeWidgetItem **item, bool expend);
     void UISetText(QTreeWidgetItem* item, int col, const char *text);
 };
 #endif // MAINWINDOW_H

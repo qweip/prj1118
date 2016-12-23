@@ -88,12 +88,12 @@ void Updater::doWork() {
                     while(o->nextIP(j)) {
                         ConnState::IP2Str(buf, (ipstr = (*o)[j].GetIP()), (ver = (*o)[j].GetVer()));
                         UIAddIP(buf, &subitem);
-                        UIAddSubItem(item, &subitem);
+                        UIAddSubItem(item, &subitem, false);
                         UISetText(subitem, 1, buf);
 
                         o->GetIPBound(ipstr, ver, l, u);
                         for(k = l; k <= u; k += 1) {
-                            UIAddSubItem(subitem, &portitem);
+                            UIAddSubItem(subitem, &portitem, false);
                             sprintf(buf, "%hu", (*o)[k].GetPort());
                             UISetText(portitem, 2, buf);
                             free((void*)ipstr);
