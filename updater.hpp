@@ -28,6 +28,8 @@ signals:
     void UIAddTop(const char *text, QTreeWidgetItem **item);
     void UIAddIP(const char *text, QTreeWidgetItem **item);
     void UIAddSubItem(QTreeWidgetItem *parent, QTreeWidgetItem **item, bool expend);
+    void UISetBG(QTreeWidgetItem *item, int nCols, const QBrush &background);
+    void UISetTextColor(QTreeWidgetItem *item, int nCols, const QColor &text);
     void UISetText(QTreeWidgetItem* item, int col, const char *text);
 };
 

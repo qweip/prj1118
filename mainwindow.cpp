@@ -292,8 +292,20 @@ void MainWindow::UIAddSubItem(QTreeWidgetItem *parent, QTreeWidgetItem **item, b
     (*item)->setExpanded(expend);
 }
 
-void MainWindow::UISetText(QTreeWidgetItem* item, int col, const char *text) {
+void MainWindow::UISetText(QTreeWidgetItem *item, int col, const char *text) {
     if(item) item->setText(col, tr(text));
+}
+
+void MainWindow::UISetBG(QTreeWidgetItem *item, int nCols, const QBrush &background) {
+    int i, n;
+    for(i = 0; i < nCols; i += 1)
+        item->setBackground(i, background);
+}
+
+void MainWindow::UISetTextColor(QTreeWidgetItem *item, int nCols, const QColor &text) {
+    int i, n;
+    for(i = 0; i < nCols; i += 1)
+        item->setTextColor(i, text);
 }
 
 void MainWindow::on_action_triggered()

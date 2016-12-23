@@ -53,6 +53,8 @@ void Updater::SetN(uint _n) {
 extern MainWindow *_w;
 void Updater::doWork() {
     char buf[64];
+    QBrush facebookBrush;
+    QColor facebookColor;
     const char *ipstr;
     ConnStateOutput *o;
     IPPacketInput *pkts;
@@ -67,8 +69,14 @@ void Updater::doWork() {
     connect(this, &Updater::UIAddTop, _w, &MainWindow::UIAddTop, Qt::BlockingQueuedConnection);
     connect(this, &Updater::UIAddIP, _w, &MainWindow::UIAddIP, Qt::BlockingQueuedConnection);
     connect(this, &Updater::UIAddSubItem, _w, &MainWindow::UIAddSubItem, Qt::BlockingQueuedConnection);
+    connect(this, &Updater::UISetBG, _w, &MainWindow::UISetBG, Qt::BlockingQueuedConnection);
+    connect(this, &Updater::UISetTextColor, _w, &MainWindow::UISetTextColor, Qt::BlockingQueuedConnection);
     connect(this, &Updater::UISetText, _w, &MainWindow::UISetText, Qt::BlockingQueuedConnection);
 
+    facebookColor.setRgb(62, 91, 154);
+    facebookBrush.setColor(facebookColor);
+    facebookBrush.setStyle(Qt::SolidPattern);
+    facebookColor.setRgb(255, 255, 255);
     while(1) {
         if((now = time(0)) - lastUpdate > UPDATE_TIME) {
             //ui->clear();
@@ -77,6 +85,8 @@ void Updater::doWork() {
             //item = new QTreeWidgetItem(ui);
             //item->setText(0, tr("Facebook"));
             UIAddTop("Facebook", &item);
+            UISetBG(item, 3, facebookBrush);
+            UISetTextColor(item, 3, facebookColor);
             for(i = 0; i < n; i += 1) {
                 m = controls[i].GetMutex();
                 m->lock();
@@ -90,12 +100,16 @@ void Updater::doWork() {
                         UIAddIP(buf, &subitem);
                         UIAddSubItem(item, &subitem, false);
                         UISetText(subitem, 1, buf);
+                        //UISetBG(subitem, 3, facebookBrush);
+                        //UISetTextColor(subitem, 3, facebookColor);
 
                         o->GetIPBound(ipstr, ver, l, u);
                         for(k = l; k <= u; k += 1) {
                             UIAddSubItem(subitem, &portitem, false);
                             sprintf(buf, "%hu", (*o)[k].GetPort());
                             UISetText(portitem, 2, buf);
+                            //UISetBG(portitem, 3, facebookBrush);
+                            //UISetTextColor(portitem, 3, facebookColor);
                             free((void*)ipstr);
                         }
                     }
