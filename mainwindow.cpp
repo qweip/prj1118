@@ -69,7 +69,9 @@ static void addr2Str(struct sockaddr *addr, char *buf, size_t maxLength) {
     }
 }
 
+#ifndef __MACH__
 typedef u_short sa_family_t;
+#endif
 static void FindAllInterfaces(QListWidget *qlw, bool ipv6Address, bool ignoreNull) {
     char devName[MAX_DEV_NAME], addrStr[64], netmaskStr[64], buf[32], *interfaceInfo;
     QString *qs;

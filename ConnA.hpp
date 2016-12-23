@@ -11,6 +11,10 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #endif
+#ifdef __MACH__
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#endif
 #include <QApplication>
 
 

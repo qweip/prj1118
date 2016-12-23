@@ -485,7 +485,11 @@ void inet6_ntoa(struct in6_addr addr, char *buf, size_t maxLength) {
 #ifdef __MINGW32_MAJOR_VERSION
         v = (addr.u.Byte[i << 1] << 8) | (addr.u.Byte[(i << 1) + 1]);
 #else
+#ifdef __MACH__
+        v = (addr.__u6_addr.__u6_addr8[i << 1] << 8) | (addr.__u6_addr.__u6_addr8[(i << 1) + 1]);
+#else
         v = (addr.__in6_u.__u6_addr8[i << 1] << 8) | (addr.__in6_u.__u6_addr8[(i << 1) + 1]);
+#endif
 #endif
         if(!v) {
             if(zeroStart + zeroCount == i) {
@@ -523,7 +527,11 @@ void inet6_ntoa(struct in6_addr addr, char *buf, size_t maxLength) {
 #ifdef __MINGW32_MAJOR_VERSION
             v = (addr.u.Byte[i << 1] << 8) | (addr.u.Byte[(i << 1) + 1]);
 #else
-            v = (addr.__in6_u.__u6_addr8[i << 1] << 8) | (addr.__in6_u.__u6_addr8[(i << 1) + 1]);
+#ifdef __MACH__
+        v = (addr.__u6_addr.__u6_addr8[i << 1] << 8) | (addr.__u6_addr.__u6_addr8[(i << 1) + 1]);
+#else
+        v = (addr.__in6_u.__u6_addr8[i << 1] << 8) | (addr.__in6_u.__u6_addr8[(i << 1) + 1]);
+#endif
 #endif
             if(i == 0) len = sprintf(tmp, "%hx", v);
             else len = sprintf(tmp, ":%hx", v);
