@@ -183,7 +183,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 692, 21));
+        menuBar->setGeometry(QRect(0, 0, 692, 17));
         menu = new QMenu(menuBar);
         menu->setObjectName(QStringLiteral("menu"));
         menu->setTearOffEnabled(false);
@@ -203,7 +203,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

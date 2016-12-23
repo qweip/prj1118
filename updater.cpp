@@ -110,6 +110,7 @@ void Updater::doWork() {
                             UISetText(portitem, 2, buf);
                             //UISetBG(portitem, 3, facebookBrush);
                             //UISetTextColor(portitem, 3, facebookColor);
+                            ipstr = (*o)[k].GetIP();
                             free((void*)ipstr);
                         }
                     }
