@@ -16,13 +16,15 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     ConnA.cpp \
     interface_thread.cpp \
-    updater.cpp
+    updater.cpp \
+    localRDNS.cpp
 
 HEADERS  += mainwindow.h \
     ConnA.hpp \
     sniff.hpp \
     interface_thread.hpp \
-    updater.hpp
+    updater.hpp \
+    localRDNS.hpp
 
 FORMS    += mainwindow.ui
 
