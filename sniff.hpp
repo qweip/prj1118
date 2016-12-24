@@ -1,9 +1,10 @@
+#ifndef SNIFF_H
+#define SNIFF_H
+
 #define ETHER_ADDR_LEN	6
 #define IP_ADDR_LEN	4
 #define LINE_LEN 16
 #define MAX_ADDR_LEN 16
-
-
 
 /*Ethernet header defined*/
 typedef struct ether_header {
@@ -79,3 +80,5 @@ typedef struct arp_header {
     unsigned char arp_dest_ether_addr[ETHER_ADDR_LEN];	/* destination_ethernet_address */
     unsigned char arp_dest_ip_addr[IP_ADDR_LEN];		/* destination_ip_address */
 }sniff_arp;
+
+#endif

@@ -7,8 +7,11 @@
 #include <QWidget>
 #include <QSlider>
 #include <QLCDNumber>
+#include <QMessageBox>
 //#include "model.h"
+#include "localRDNS.hpp"
 
+LRDNS rDNS;
 MainWindow *_w;
 int main(int argc, char *argv[])
 {
@@ -56,5 +59,11 @@ int main(int argc, char *argv[])
 
     parent->show();*/
 
+    if(rDNS.load("C:\\Users\\Neold2021\\Desktop\\git\\prj1118\\debug\\config.ini")) {
+        QMessageBox msg;
+        msg.setText("config.ini檔開啟失敗, 程式即將離開");
+        msg.exec();
+        return 0;
+    }
     return a.exec();
 }

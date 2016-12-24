@@ -5,6 +5,7 @@
 #include <QHostInfo>
 #include <QMessageBox>
 #include "mainwindow.h"
+#include "localRDNS.hpp"
 
 #include <pcap.h>
 
@@ -353,16 +354,23 @@ bool ConnStateOutput::nextIP(size_t &ret) {
     return false;
 }
 
+extern LRDNS rDNS;
 int FB(IPPacketInput input, ConnStateOutput& output, const char *app) {
     ConnState state;
     sniff_ip* ip;
     sniff_tcp* tcp;
+    const uchar* pkt;
     uint32_t ts[3]={0},index = 0,ipHeaderLen,totalLength, lastSeen=0, nConBig = 0, n;
     ushort ver,serverPort,clientPort;
     uchar Proto;
-    const uchar* pkt;
+    rDNSRecord *service;
+    size_t nServices, i;
+    rDNSRecord matcher;
 
     char serverIP[256],clientIP[MAX_ADDR_LEN];
+
+    service = rDNS.GetService(app, &nServices);
+    if(!nServices) return 0;
 
     n = input.N();
     for(index = 0; index < n; index += 1) {
@@ -403,8 +411,17 @@ int FB(IPPacketInput input, ConnStateOutput& output, const char *app) {
                 }
                 else break;*/
 
-                if((size_t)strstr(serverIP, "31.13.") != (size_t)serverIP) break;
-
+                //if((size_t)strstr(serverIP, "31.13.") != (size_t)serverIP) break;
+                memset(matcher.ip, 0, sizeof(matcher.ip));
+                matcher.ip[0] = ip->saddr.byte1;
+                matcher.ip[1] = ip->saddr.byte2;
+                matcher.ip[2] = ip->saddr.byte3;
+                matcher.ip[3] = ip->saddr.byte4;
+                for(i = 0; i < nServices; i += 1) {
+                    memcpy(matcher.mask, service[i].mask, sizeof(matcher.mask));
+                    if(LRDNS::match(&matcher, service + i) == 0) break;
+                }
+                if(i >= nServices) break;
 
                 //checkconn
                 ConnState *res;
