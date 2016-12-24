@@ -114,9 +114,9 @@ void Updater::doWork() {
             for(i = 0; i < n; i += 1) {
                 m = controls[i].GetMutex();
                 m->lock();
+                pkts = controls[i].GetIPPacketInput();
 
                 for(w = 0; w < nServices; w += 1) {
-                    pkts = controls[i].GetIPPacketInput();
                     o = new ConnStateOutput();
 
                     if(FB(*pkts, *o, arr[w]->serviceName) > 0) {
