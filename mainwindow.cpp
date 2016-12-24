@@ -151,7 +151,7 @@ static void FindAllInterfaces(QListWidget *qlw, bool ipv6Address, bool ignoreNul
             desc = cur->description;
             descLen = strlen(cur->description);
         }
-#endif #ifdef __MACH__
+#endif //ifdef __MACH__
 #endif //ifdef __linux__
         else {
             desc = "NULL";
