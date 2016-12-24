@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 
     parent->show();*/
 
-    if(rDNS.load("C:\\Users\\Neold2021\\Desktop\\git\\prj1118\\debug\\config.ini")) {
+    if(rDNS.load("config.ini")) {
         QMessageBox msg;
         msg.setText("config.ini檔開啟失敗, 程式即將離開");
         msg.exec();
