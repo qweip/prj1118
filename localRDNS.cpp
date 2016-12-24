@@ -1,5 +1,6 @@
 #include <cstring>
 #include <cstdio>
+#include <cerrno>
 
 #include "localRDNS.hpp"
 
