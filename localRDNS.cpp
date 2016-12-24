@@ -3,6 +3,19 @@
 
 #include "localRDNS.hpp"
 
+int LRDNS::cmpService(const void *a, const void *b) { //rDNSRecord *
+    rDNSRecord *c = (rDNSRecord*)a;
+    rDNSRecord *d = (rDNSRecord*)b;
+    int r;
+
+    if(!(c->serviceName) || !(d->serviceName)) {
+        if(!c->serviceName) return -1;
+        else return 1;
+    }
+    else if((r = strcmp(c->serviceName, d->serviceName)) != 0) return r;
+    else return memcmp(c->ip, d->ip, sizeof(c->ip));
+}
+
 int LRDNS::cmpServiceName(const void *a, const void *b) { //rDNSRecord *
     rDNSRecord *c = (rDNSRecord*)a;
     rDNSRecord *d = (rDNSRecord*)b;
@@ -57,17 +70,33 @@ void LRDNS::tokenize(const char *str, int sepChr, char ***arr, size_t *size, int
     *arr = a;
 }
 
-int LRDNS::parse(const char *str, unsigned char *ip, unsigned char *mask, char **serviceName) {
+int LRDNS::parse(const char *str, unsigned char *ip, unsigned char *mask, char **serviceName, int *r, int *g, int *b, int *tr, int *tg, int *tb) {
     char **line, **net, **ipstrs;
     size_t i, j, nToks, nNetParts, nIpPart, index, zeros;
     unsigned int v, ipType;
     int ret = 1;
 
     tokenize(str, ' ', &line, &nToks, 1);
-    if(nToks != 2)goto line_fail;
+    if(nToks == 2) {
+        if(r) *r = 255;
+        if(g) *g = 255;
+        if(b) *b = 255;
+        if(tr) *tr = 0;
+        if(tg) *tg = 0;
+        if(tb) *tb = 0;
+    }
+    else if(nToks == 8) {
+        if(r) sscanf(line[2], "%d", r);
+        if(g) sscanf(line[3], "%d", g);
+        if(b) sscanf(line[4], "%d", b);
+        if(tr) sscanf(line[5], "%d", tr);
+        if(tg) sscanf(line[6], "%d", tg);
+        if(tb) sscanf(line[7], "%d", tb);
+    }
+    else goto line_fail;
 
     tokenize(line[0], '/', &net, &nNetParts, 1);
-    if(nNetParts != 2)goto netpart_fail;
+    if(nNetParts != 2) goto netpart_fail;
 
     tokenize(net[0], ':', &ipstrs, &nIpPart, 0);
     if(nIpPart == 1) {
@@ -195,7 +224,7 @@ int LRDNS::match(const void *a, const void *b) { //rDNSRecord *
 
 LRDNS::LRDNS() {
     p = (rDNSRecord*)malloc(sizeof(*p) * INITIAL_SIZE);
-    n = 0;
+    i = n = 0;
     capacity = INITIAL_SIZE;
 }
 
@@ -213,6 +242,8 @@ void LRDNS::addRecord(const rDNSRecord *r) {
     }
     p[n] = *r;
     n += 1;
+
+    qsort(p, n, sizeof(*p), LRDNS::cmpService);
 }
 
 int LRDNS::load(const char *filename) {
@@ -225,7 +256,7 @@ int LRDNS::load(const char *filename) {
 
     while(fgets(buf, sizeof(buf), file)) {
         removecrlf(buf);
-        if(parse(buf, r.ip, r.mask, &(r.serviceName))) {
+        if(parse(buf, r.ip, r.mask, &(r.serviceName), &(r.r), &(r.g), &(r.b), &(r.tr), &(r.tg), &(r.tb))) {
             fclose(file);
             return 1;
         }
@@ -251,6 +282,10 @@ const rDNSRecord* LRDNS::GetService(const char *_serviceName, size_t *num) const
     key.serviceName = (char*)_serviceName;
 
     res = (const rDNSRecord*)bsearch(&key, p, n, sizeof(*p), LRDNS::cmpServiceName);
+    if(!res) {
+        if(num) *num = 0;
+        return 0;
+    }
 
     end = start = ((size_t)res - (size_t)p) / sizeof(*p);
     while(start > 0) {
@@ -273,6 +308,10 @@ rDNSRecord* LRDNS::GetService(const char *_serviceName, size_t *num) {
     key.serviceName = (char*)_serviceName;
 
     res = (rDNSRecord*)bsearch(&key, p, n, sizeof(*p), LRDNS::cmpServiceName);
+    if(!res) {
+        if(num) *num = 0;
+        return 0;
+    }
 
     end = start = ((size_t)res - (size_t)p) / sizeof(*p);
     while(start > 0) {
@@ -287,4 +326,36 @@ rDNSRecord* LRDNS::GetService(const char *_serviceName, size_t *num) {
 
     if(num) *num = end - start + 1;
     return (rDNSRecord*)(p + start);
+}
+
+void LRDNS::ResetIndex() {
+    i = 0;
+}
+
+bool LRDNS::nextService(size_t &ret) {
+    rDNSRecord* res;
+    size_t s;
+    if(i < n) {
+        res = GetService(p[i].serviceName, &s);
+        ret = ((size_t)res - (size_t)p) / sizeof(*p);
+        i = ret + s;
+        return true;
+    }
+    return false;
+}
+
+rDNSRecord* LRDNS::Base() {
+    return p;
+}
+
+const rDNSRecord* LRDNS::Base() const {
+    return p;
+}
+
+const rDNSRecord& LRDNS::operator[](unsigned int index) const {
+    return p[index];
+}
+
+rDNSRecord& LRDNS::operator[](unsigned int index) {
+    return p[index];
 }
