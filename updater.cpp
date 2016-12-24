@@ -61,7 +61,7 @@ void Updater::doWork() {
     ConnStateOutput *o;
     IPPacketInput *pkts;
     QMutex *m;
-    QTreeWidgetItem *item, *subitem, *portitem;
+    QTreeWidgetItem *item, *subitem, *portitem, **serviceItems;
     rDNSRecord **arr, *b;
     time_t now;
     uint i;
@@ -84,6 +84,7 @@ void Updater::doWork() {
     Brushes = new QBrush[nServices];
     Colors = new QColor[nServices];
     arr = new rDNSRecord*[nServices];
+    serviceItems = new QTreeWidgetItem*[nServices];
 
     rDNS.ResetIndex();
     b = rDNS.Base();
@@ -101,17 +102,20 @@ void Updater::doWork() {
             //ui->clear();
             UIClear();
 
-            //item = new QTreeWidgetItem(ui);
-            //item->setText(0, tr("Facebook"));
             for(w = 0; w < nServices; w += 1) {
+                //item = new QTreeWidgetItem(ui);
+                //item->setText(0, tr("Facebook"));
                 UIAddTop(arr[w]->serviceName, &item);
                 UISetBG(item, 3, Brushes[w]);
                 UISetTextColor(item, 3, Colors[w]);
+                serviceItems[w] = item;
+            }
 
-                for(i = 0; i < n; i += 1) {
-                    m = controls[i].GetMutex();
-                    m->lock();
+            for(i = 0; i < n; i += 1) {
+                m = controls[i].GetMutex();
+                m->lock();
 
+                for(w = 0; w < nServices; w += 1) {
                     pkts = controls[i].GetIPPacketInput();
                     o = new ConnStateOutput();
 
@@ -119,7 +123,7 @@ void Updater::doWork() {
                         while(o->nextIP(j)) {
                             ConnState::IP2Str(buf, (ipstr = (*o)[j].GetIP()), (ver = (*o)[j].GetVer()));
                             UIAddIP(buf, &subitem);
-                            UIAddSubItem(item, &subitem, false);
+                            UIAddSubItem(serviceItems[w], &subitem, false);
                             UISetText(subitem, 1, buf);
                             //UISetBG(subitem, 3, facebookBrush);
                             //UISetTextColor(subitem, 3, facebookColor);
@@ -136,12 +140,10 @@ void Updater::doWork() {
                             }
                         }
                     }
-
-                    pkts->clear();
-                    m->unlock();
-
                     delete o;
                 }
+                pkts->clear();
+                m->unlock();
             }
 
             lastUpdate = now;
@@ -149,7 +151,8 @@ void Updater::doWork() {
         else QThread::msleep(900);
     }
 
-    delete Brushes;
-    delete Colors;
-    delete arr;
+    delete[] Brushes;
+    delete[] Colors;
+    delete[] arr;
+    delete[] serviceItems;
 }
