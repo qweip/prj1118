@@ -57,7 +57,7 @@ void LRDNS::tokenize(const char *str, int sepChr, char ***arr, size_t *size, int
         sep += 1;
     }
 
-    if(((size_t)end != (size_t)(last + 1)) || ignore) {
+    if(((size_t)end != (size_t)(last + 1)) || !ignore) {
         s = (size_t)end - (size_t)(last + 1);
         subs = (char*)malloc(s + 1);
         subs[s] = '\0';
@@ -71,14 +71,19 @@ void LRDNS::tokenize(const char *str, int sepChr, char ***arr, size_t *size, int
     *arr = a;
 }
 
-int LRDNS::parse(const char *str, unsigned char *ip, unsigned char *mask, char **serviceName, int *r, int *g, int *b, int *tr, int *tg, int *tb) {
+int LRDNS::parse(const char *str, unsigned char *ip, unsigned char *mask, char **serviceName, int *r, int *g, int *b, int *tr, int *tg, int *tb, int *isnull) {
     char **line, **net, **ipstrs;
     size_t i, j, nToks, nNetParts, nIpPart, index, zeros;
     unsigned int v, ipType;
     int ret = 1;
 
     tokenize(str, ' ', &line, &nToks, 1);
-    if(nToks == 2) {
+    if(nToks == 0) {
+        ret = 0;
+        if(isnull) *isnull = 1;
+        goto line_fail;
+    }
+    else if(nToks == 2) {
         if(r) *r = 255;
         if(g) *g = 255;
         if(b) *b = 255;
@@ -188,8 +193,8 @@ int LRDNS::parse(const char *str, unsigned char *ip, unsigned char *mask, char *
     *serviceName = (char*)malloc(j + 1);
     memcpy(*serviceName, line[1], j + 1);
 
-empty_line:
     ret = 0;
+    if(isnull) *isnull = 0;
 ip_fail:
     for(i = 0; i < nIpPart; i += 1)
         free(ipstrs[i]);
@@ -252,17 +257,18 @@ int LRDNS::load(const char *filename) {
     char buf[64];
     FILE *file;
     rDNSRecord r;
+    int isNull;
 
     file = fopen(filename, "r");
     if(!file) return errno;
 
     while(fgets(buf, sizeof(buf), file)) {
         removecrlf(buf);
-        if(parse(buf, r.ip, r.mask, &(r.serviceName), &(r.r), &(r.g), &(r.b), &(r.tr), &(r.tg), &(r.tb))) {
+        if(parse(buf, r.ip, r.mask, &(r.serviceName), &(r.r), &(r.g), &(r.b), &(r.tr), &(r.tg), &(r.tb), &isNull)) {
             fclose(file);
             return 1;
         }
-        addRecord(&r);;
+        if(!isNull) addRecord(&r);;
     }
 
     fclose(file);

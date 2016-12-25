@@ -27,7 +27,7 @@ class LRDNS {
     static int cmpService(const void *a, const void *b);
     static int cmpServiceName(const void *a, const void *b); //rDNSRecord *
     static void tokenize(const char *str, int sepChr, char ***arr, size_t *size, int ignore);
-    static int parse(const char *str, unsigned char *ip, unsigned char *mask, char **serviceName, int *r, int *g, int *b, int *tr, int *tg, int *tb);
+    static int parse(const char *str, unsigned char *ip, unsigned char *mask, char **serviceName, int *r, int *g, int *b, int *tr, int *tg, int *tb, int *isnull);
     static void removecrlf(char *str);
 
     void addRecord(const rDNSRecord *r);
