@@ -57,7 +57,7 @@ void LRDNS::tokenize(const char *str, int sepChr, char ***arr, size_t *size, int
         sep += 1;
     }
 
-    if(((size_t)sep != (size_t)(last + 1)) || ignore) {
+    if(((size_t)end != (size_t)(last + 1)) || ignore) {
         s = (size_t)end - (size_t)(last + 1);
         subs = (char*)malloc(s + 1);
         subs[s] = '\0';
@@ -188,6 +188,7 @@ int LRDNS::parse(const char *str, unsigned char *ip, unsigned char *mask, char *
     *serviceName = (char*)malloc(j + 1);
     memcpy(*serviceName, line[1], j + 1);
 
+empty_line:
     ret = 0;
 ip_fail:
     for(i = 0; i < nIpPart; i += 1)
