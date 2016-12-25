@@ -16,7 +16,6 @@
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
@@ -25,8 +24,6 @@
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
-#include <QtWidgets/QTextBrowser>
-#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QWidget>
@@ -40,16 +37,6 @@ public:
     QWidget *centralWidget;
     QGridLayout *gridLayout_3;
     QTabWidget *tabWidget;
-    QWidget *tab;
-    QGridLayout *gridLayout;
-    QTextEdit *textEdit;
-    QTextEdit *textEdit_2;
-    QPushButton *pushButton_2;
-    QTextEdit *textEdit_3;
-    QRadioButton *radioButton;
-    QPushButton *pushButton;
-    QTextBrowser *textBrowser;
-    QLabel *label;
     QWidget *tab_2;
     QGridLayout *gridLayout_4;
     QTreeWidget *treeWidget_2;
@@ -87,53 +74,6 @@ public:
         tabWidget->setTabPosition(QTabWidget::North);
         tabWidget->setTabShape(QTabWidget::Rounded);
         tabWidget->setElideMode(Qt::ElideNone);
-        tab = new QWidget();
-        tab->setObjectName(QStringLiteral("tab"));
-        gridLayout = new QGridLayout(tab);
-        gridLayout->setSpacing(6);
-        gridLayout->setContentsMargins(11, 11, 11, 11);
-        gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        textEdit = new QTextEdit(tab);
-        textEdit->setObjectName(QStringLiteral("textEdit"));
-
-        gridLayout->addWidget(textEdit, 1, 0, 1, 1);
-
-        textEdit_2 = new QTextEdit(tab);
-        textEdit_2->setObjectName(QStringLiteral("textEdit_2"));
-
-        gridLayout->addWidget(textEdit_2, 0, 0, 1, 1);
-
-        pushButton_2 = new QPushButton(tab);
-        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
-
-        gridLayout->addWidget(pushButton_2, 3, 1, 1, 1);
-
-        textEdit_3 = new QTextEdit(tab);
-        textEdit_3->setObjectName(QStringLiteral("textEdit_3"));
-
-        gridLayout->addWidget(textEdit_3, 1, 1, 1, 1);
-
-        radioButton = new QRadioButton(tab);
-        radioButton->setObjectName(QStringLiteral("radioButton"));
-
-        gridLayout->addWidget(radioButton, 3, 0, 1, 1);
-
-        pushButton = new QPushButton(tab);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
-
-        gridLayout->addWidget(pushButton, 2, 1, 1, 1);
-
-        textBrowser = new QTextBrowser(tab);
-        textBrowser->setObjectName(QStringLiteral("textBrowser"));
-
-        gridLayout->addWidget(textBrowser, 0, 1, 1, 1);
-
-        label = new QLabel(tab);
-        label->setObjectName(QStringLiteral("label"));
-
-        gridLayout->addWidget(label, 2, 0, 1, 1);
-
-        tabWidget->addTab(tab, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));
         gridLayout_4 = new QGridLayout(tab_2);
@@ -177,13 +117,14 @@ public:
         __qtreewidgetitem->setText(0, QStringLiteral("IPs"));
         treeWidget->setHeaderItem(__qtreewidgetitem);
         treeWidget->setObjectName(QStringLiteral("treeWidget"));
+        treeWidget->setMaximumSize(QSize(200, 16777215));
 
         gridLayout_3->addWidget(treeWidget, 2, 1, 1, 1);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 692, 17));
+        menuBar->setGeometry(QRect(0, 0, 692, 21));
         menu = new QMenu(menuBar);
         menu->setObjectName(QStringLiteral("menu"));
         menu->setTearOffEnabled(false);
@@ -213,31 +154,6 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "\344\270\273\347\250\213\345\274\217", 0));
         action->setText(QApplication::translate("MainWindow", "\351\227\234\346\226\274", 0));
-        textEdit->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'PMingLiU'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", 0));
-        textEdit_2->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'PMingLiU'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", 0));
-        pushButton_2->setText(QApplication::translate("MainWindow", "PushButton", 0));
-        textEdit_3->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'PMingLiU'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", 0));
-        radioButton->setText(QApplication::translate("MainWindow", "RadioButton", 0));
-        pushButton->setText(QApplication::translate("MainWindow", "PushButton", 0));
-        textBrowser->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'PMingLiU'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", 0));
-        label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "\346\226\275\345\267\245\344\270\255", 0));
         QTreeWidgetItem *___qtreewidgetitem = treeWidget_2->headerItem();
         ___qtreewidgetitem->setText(2, QApplication::translate("MainWindow", "Port", 0));
         ___qtreewidgetitem->setText(1, QApplication::translate("MainWindow", "IP", 0));
